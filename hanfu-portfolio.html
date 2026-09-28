@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夏至｜汉服人像摄影</title>
+<meta name="description" content="夏至——汉服人像摄影。古风与现代审美的融合。常驻开封·郑州，可出差。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-0: #e8dfd0;
+  --bg-1: #e4d9c7;
+  --bg-2: #d9ccb6;
+  --bg-3: #cfc0a6;
+  --text-0: #3a3125;
+  --text-1: #6b5f4c;
+  --text-2: #9a8c74;
+  --accent: #7a6548;
+  --accent-bright: #8f7a5a;
+  --accent-soft: rgba(122,101,72,0.12);
+  --line: #c5b89e;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --serif: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  --serif-cn: 'Noto Serif SC', 'Cormorant Garamond', serif;
+  --sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-0);
+  color: var(--text-0);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent-soft); color: var(--accent); }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ===== Scroll Progress ===== */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: var(--accent); z-index: 999;
+  width: 0; transition: width 0.1s linear;
+}
+
+/* ===== Navigation ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 18px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(12,10,8,0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease), padding 0.4s var(--ease);
+}
+.nav.scrolled {
+  background: rgba(232,223,208,0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 14px 48px;
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo {
+  font-family: var(--serif-cn); font-size: 22px; font-weight: 500;
+  letter-spacing: 0.08em; color: var(--text-0);
+  cursor: pointer; transition: color 0.3s var(--ease);
+}
+.nav-logo:hover { color: var(--accent); }
+.nav-logo span { color: var(--accent); font-family: var(--serif); font-style: italic; }
+.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-link {
+  font-size: 13px; letter-spacing: 0.06em; color: var(--text-1);
+  position: relative; padding-bottom: 4px;
+  cursor: pointer; transition: color 0.3s var(--ease);
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 1px; background: var(--accent);
+  transition: width 0.3s var(--ease);
+}
+.nav-link:hover { color: var(--text-0); }
+.nav-link:hover::after { width: 100%; }
+.nav-link.active { color: var(--accent); }
+.nav-link.active::after { width: 100%; }
+.nav-cta {
+  font-size: 13px; letter-spacing: 0.06em;
+  color: var(--bg-0); background: var(--accent);
+  padding: 8px 20px; border-radius: 2px;
+  cursor: pointer; transition: opacity 0.3s var(--ease);
+}
+.nav-cta:hover { opacity: 0.85; }
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
+.nav-burger span { width: 22px; height: 1.5px; background: var(--text-0); transition: 0.3s var(--ease); }
+
+/* ===== Hero ===== */
+.hero {
+  position: relative; height: 100vh; min-height: 600px;
+  display: flex; align-items: flex-end; padding: 0 48px 80px;
+  overflow: hidden;
+}
+.hero-slides {
+  position: absolute; inset: 0; z-index: 0;
+  overflow: hidden;
+}
+.hero-slide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0; transform: scale(1.08);
+  transition: opacity 1.8s var(--ease), transform 8s linear;
+  will-change: opacity, transform;
+}
+.hero-slide.active {
+  opacity: 1; transform: scale(1);
+}
+.hero-slide.prev {
+  opacity: 0;
+}
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, transparent 0%, transparent 55%, rgba(232,223,208,0.6) 100%);
+}
+.hero-content { position: relative; z-index: 2; max-width: 720px; }
+.hero-tag {
+  font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 20px; opacity: 0;
+  animation: fadeUp 1s var(--ease) 0.3s forwards;
+}
+.hero-name {
+  font-family: var(--serif-cn); font-size: clamp(56px, 9vw, 120px);
+  font-weight: 300; line-height: 0.95; letter-spacing: -0.02em;
+  margin-bottom: 16px; opacity: 0;
+  animation: fadeUp 1.2s var(--ease) 0.5s forwards;
+  background: linear-gradient(90deg, #3a3125 0%, #3a3125 30%, #c8baa0 50%, #3a3125 70%, #3a3125 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeUp 1.2s var(--ease) 0.5s forwards, shimmer 4s ease-in-out infinite 1.5s;
+}
+.hero-name em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--accent); font-size: 0.7em; display: block; margin-top: 4px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent) 30%, var(--accent-bright) 50%, var(--accent) 70%, var(--accent) 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s ease-in-out infinite 1.5s;
+}
+@keyframes shimmer {
+  0% { background-position: 150% 0; }
+  100% { background-position: -150% 0; }
+}
+.hero-sub {
+  font-size: 15px; letter-spacing: 0.15em;
+  opacity: 0; animation: fadeUp 1s var(--ease) 0.8s forwards;
+  background: linear-gradient(90deg, var(--text-0) 0%, var(--text-0) 30%, var(--accent-bright) 50%, var(--text-0) 70%, var(--text-0) 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeUp 1s var(--ease) 0.8s forwards, shimmer 4s ease-in-out infinite 2s;
+}
+.hero-sub span { margin: 0 12px; color: var(--text-2); }
+.hero-scroll {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; animation: fadeUp 1s var(--ease) 1.2s forwards;
+}
+.hero-scroll span { font-size: 11px; letter-spacing: 0.2em; color: var(--text-2); }
+.hero-scroll-line {
+  width: 1px; height: 40px; background: var(--text-2);
+  position: relative; overflow: hidden;
+}
+.hero-scroll-line::after {
+  content: ''; position: absolute; top: -100%; left: 0;
+  width: 100%; height: 50%; background: var(--accent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollLine {
+  0% { top: -100%; } 50% { top: 100%; } 100% { top: 100%; }
+}
+
+/* ===== Music Player ===== */
+.music-btn {
+  position: absolute; top: 90px; right: 48px; z-index: 10;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(12,10,8,0.6); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.4s var(--ease);
+  opacity: 0; animation: fadeUp 1s var(--ease) 1.5s forwards;
+}
+.music-btn:hover {
+  background: var(--accent-soft); border-color: var(--accent);
+  transform: scale(1.08);
+}
+.music-btn.playing { border-color: var(--accent); }
+.music-btn svg { width: 20px; height: 20px; stroke: var(--accent); }
+.music-btn .music-icon-pause { display: none; }
+.music-btn .music-icon-muted { display: none; }
+.music-btn.playing .music-icon-play { display: none; }
+.music-btn.playing .music-icon-pause { display: block; }
+.music-btn.playing .music-icon-muted { display: none; }
+.music-btn.muted .music-icon-play { display: none; }
+.music-btn.muted .music-icon-pause { display: none; }
+.music-btn.muted .music-icon-muted { display: block; }
+.music-btn.playing::before {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 1px solid var(--accent);
+  animation: musicPulse 2s ease-in-out infinite;
+}
+.music-btn::after {
+  content: '单击播放/暂停 · 双击导入音乐';
+  position: absolute; top: 50%; right: 60px; transform: translateY(-50%);
+  white-space: nowrap; font-size: 12px; color: var(--text-1);
+  background: rgba(12,10,8,0.8); backdrop-filter: blur(8px);
+  padding: 6px 14px; border-radius: 2px; border: 1px solid var(--accent-soft);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease);
+}
+.music-btn:hover::after { opacity: 1; }
+@keyframes musicPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0; transform: scale(1.3); }
+}
+
+@media (max-width: 1024px) {
+  .music-btn { right: 32px; top: 70px; }
+}
+@media (max-width: 768px) {
+  .music-btn { right: 20px; top: 64px; width: 42px; height: 42px; }
+}
+
+/* ===== Section Common ===== */
+.section { padding: 120px 48px; position: relative; }
+.section-header { margin-bottom: 64px; }
+.section-label {
+  font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px;
+}
+.section-title {
+  font-family: var(--serif-cn); font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300; letter-spacing: -0.01em; line-height: 1.1;
+}
+.section-title em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--accent); font-size: 0.6em; display: block; margin-top: 8px;
+}
+
+/* ===== Portfolio ===== */
+.portfolio { background: var(--bg-1); }
+.filters {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 48px;
+  border-bottom: 1px solid var(--line); padding-bottom: 24px;
+}
+.filter-btn {
+  font-size: 13px; letter-spacing: 0.04em; color: var(--text-1);
+  background: none; border: 1px solid transparent;
+  padding: 8px 18px; cursor: pointer; border-radius: 2px;
+  transition: all 0.3s var(--ease); font-family: var(--sans);
+}
+.filter-btn:hover { color: var(--text-0); }
+.filter-btn.active {
+  color: var(--accent); border-color: var(--accent-soft);
+  background: var(--accent-soft);
+}
+.filter-count { font-size: 12px; color: var(--text-2); margin-left: auto; align-self: center; }
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.project-card {
+  position: relative; overflow: hidden; border-radius: 2px;
+  cursor: pointer; background: var(--bg-2);
+  aspect-ratio: 4/5; transition: transform 0.5s var(--ease);
+  opacity: 0; transform: translateY(30px);
+}
+.project-card.visible { opacity: 1; transform: translateY(0); }
+.project-card.hidden { display: none; }
+.project-card-img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.7s var(--ease), filter 0.5s var(--ease);
+  filter: brightness(0.97);
+}
+.project-card:hover .project-card-img {
+  transform: scale(1.04); filter: brightness(1);
+}
+.project-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(58,49,37,0.85) 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 24px; transition: opacity 0.4s var(--ease);
+}
+.project-card-group {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+.project-card-title {
+  font-family: var(--serif-cn); font-size: 20px; font-weight: 400;
+  line-height: 1.3; margin-bottom: 4px;
+}
+.project-card-meta {
+  font-size: 12px; color: var(--text-1); letter-spacing: 0.03em;
+}
+.project-card-arrow {
+  position: absolute; top: 20px; right: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: translateY(-8px);
+  transition: all 0.4s var(--ease);
+}
+.project-card:hover .project-card-arrow {
+  opacity: 1; transform: translateY(0);
+}
+.project-card-arrow svg { width: 14px; height: 14px; stroke: var(--text-0); }
+
+/* Text-only card */
+.project-card.no-image {
+  background: var(--bg-2); display: flex; flex-direction: column;
+  justify-content: space-between; padding: 28px;
+  border: 1px solid var(--line);
+}
+.project-card.no-image .project-card-group { color: var(--accent); }
+.project-card.no-image .project-card-title { font-size: 22px; }
+.project-card.no-image .project-card-status {
+  font-size: 11px; color: var(--text-2); letter-spacing: 0.1em;
+  padding: 4px 10px; border: 1px solid var(--line); border-radius: 2px;
+  align-self: flex-start;
+}
+.project-card.no-image:hover {
+  border-color: var(--accent-soft); background: var(--bg-3);
+}
+
+/* ===== About ===== */
+.about { background: var(--bg-0); }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: start;
+}
+.about-text { font-size: 17px; line-height: 1.8; color: var(--text-1); }
+.about-text p { margin-bottom: 20px; }
+.about-text strong { color: var(--text-0); font-weight: 500; }
+.about-info { display: flex; flex-direction: column; gap: 0; }
+.about-info-item {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 20px 0; border-bottom: 1px solid var(--line);
+}
+.about-info-item:last-child { border-bottom: none; }
+.about-info-label { font-size: 12px; letter-spacing: 0.15em; color: var(--text-2); text-transform: uppercase; }
+.about-info-value { font-family: var(--serif); font-size: 18px; color: var(--text-0); }
+
+/* ===== Pricing ===== */
+.pricing { background: var(--bg-1); }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+  margin-bottom: 64px;
+}
+.price-card {
+  position: relative; border-radius: 4px;
+  transition: all 0.4s var(--ease);
+  display: flex; flex-direction: column;
+  overflow: hidden; min-height: 580px;
+}
+.price-card-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.62); transition: filter 0.5s var(--ease), transform 0.7s var(--ease);
+  z-index: 0;
+}
+.price-card:hover .price-card-img { filter: brightness(0.55); transform: scale(1.03); }
+.price-card-body {
+  position: relative; z-index: 1; padding: 40px 32px;
+  display: flex; flex-direction: column; flex: 1;
+  background: linear-gradient(180deg, rgba(232,223,208,0.15) 0%, rgba(58,49,37,0.75) 60%, rgba(58,49,37,0.92) 100%);
+}
+.price-card.featured .price-card-body {
+  background: linear-gradient(180deg, rgba(232,223,208,0.12) 0%, rgba(122,101,72,0.75) 60%, rgba(58,49,37,0.92) 100%);
+}
+.price-card .price-name,
+.price-card .price-name-en,
+.price-card .price-amount,
+.price-card .price-unit,
+.price-card .price-note,
+.price-card .price-features li { color: #f5efe2; }
+.price-card .price-name-en,
+.price-card .price-unit,
+.price-card .price-note,
+.price-card .price-features li.excluded { color: rgba(245,239,226,0.6); }
+.price-card .price-features li::before { background: var(--accent-bright); }
+.price-card .price-features li.excluded::before { background: rgba(245,239,226,0.3); }
+.price-card .price-divider { background: rgba(245,239,226,0.15); }
+.price-card .price-badge {
+  background: var(--accent-bright); color: #2a2419;
+}
+.price-card.featured {
+  border: 1px solid var(--accent-bright);
+  transform: translateY(-8px);
+}
+.price-card.featured:hover { transform: translateY(-12px); }
+.price-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+.price-badge {
+  display: inline-block; font-size: 11px; letter-spacing: 0.15em;
+  color: var(--bg-0); background: var(--accent);
+  padding: 4px 12px; border-radius: 2px; margin-bottom: 20px;
+  text-transform: uppercase; align-self: flex-start;
+}
+.price-name {
+  font-family: var(--serif); font-size: 24px; color: var(--text-0);
+  margin-bottom: 8px;
+}
+.price-name-en { font-size: 12px; letter-spacing: 0.15em; color: var(--text-2); margin-bottom: 24px; text-transform: uppercase; }
+.price-amount {
+  font-family: var(--serif); font-size: 42px; color: var(--accent);
+  margin-bottom: 4px;
+}
+.price-unit { font-size: 14px; color: var(--text-2); margin-bottom: 28px; }
+.price-divider { height: 1px; background: var(--line); margin-bottom: 24px; }
+.price-features { list-style: none; padding: 0; margin: 0 0 32px 0; flex: 1; }
+.price-features li {
+  font-size: 14px; color: var(--text-1); line-height: 1.6;
+  padding: 6px 0 6px 24px; position: relative;
+}
+.price-features li::before {
+  content: ''; position: absolute; left: 0; top: 12px;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+}
+.price-features li.excluded { color: var(--text-2); }
+.price-features li.excluded::before { background: var(--text-2); }
+.price-note { font-size: 13px; color: var(--text-2); margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); }
+
+.pricing-contact {
+  text-align: center; padding: 48px 32px;
+  background: var(--bg-2); border: 1px solid var(--line); border-radius: 4px;
+}
+.pricing-contact-text {
+  font-size: 16px; color: var(--text-1); line-height: 1.7; margin-bottom: 24px;
+}
+.wechat-card {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 24px 32px; background: var(--bg-3); border: 1px solid var(--accent-soft);
+  border-radius: 4px;
+}
+.wechat-qr {
+  width: 120px; height: 120px; background: var(--bg-0);
+  border: 1px solid var(--line); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.wechat-qr svg { width: 100px; height: 100px; }
+.wechat-label { font-size: 12px; letter-spacing: 0.15em; color: var(--text-2); text-transform: uppercase; }
+.wechat-id { font-family: var(--serif); font-size: 18px; color: var(--text-0); }
+.pricing-extra { font-size: 13px; color: var(--text-2); margin-top: 20px; line-height: 1.6; }
+
+.locations { margin-bottom: 48px; }
+.locations-label { font-size: 12px; letter-spacing: 0.15em; color: var(--text-2); text-transform: uppercase; margin-bottom: 24px; text-align: center; }
+.locations-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.location-card {
+  position: relative; border-radius: 4px; overflow: hidden;
+  aspect-ratio: 3/4; transition: all 0.4s var(--ease);
+}
+.location-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.75); transition: all 0.5s var(--ease); }
+.location-card:hover img { filter: brightness(0.6); transform: scale(1.05); }
+.location-card:hover { transform: translateY(-4px); }
+.location-card-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, transparent 40%, rgba(58,49,37,0.85) 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 20px; text-align: left;
+}
+.location-card-name { font-family: var(--serif); font-size: 20px; color: #f5efe2; margin-bottom: 4px; }
+.location-card-tag { font-size: 12px; color: rgba(245,239,226,0.65); letter-spacing: 0.08em; }
+
+/* ===== Footer ===== */
+.footer {
+  padding: 48px; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--bg-0);
+}
+.footer-logo { font-family: var(--serif-cn); font-size: 18px; color: var(--text-0); }
+.footer-logo span { color: var(--accent); font-family: var(--serif); font-style: italic; }
+.footer-copy { font-size: 12px; color: var(--text-2); letter-spacing: 0.05em; }
+
+/* ===== Lightbox ===== */
+.lightbox {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(232,223,208,0.97); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.4s var(--ease), visibility 0.4s var(--ease);
+}
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox-inner {
+  position: relative; width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+}
+.lightbox-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 32px; flex-shrink: 0;
+}
+.lightbox-counter {
+  font-family: var(--serif); font-size: 16px; color: var(--text-1);
+  letter-spacing: 0.1em;
+}
+.lightbox-counter span { color: var(--accent); }
+.lightbox-close {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s var(--ease);
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.12); }
+.lightbox-close svg { width: 18px; height: 18px; stroke: var(--text-0); }
+.lightbox-body {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 0 32px; gap: 32px; min-height: 0;
+}
+.lightbox-image-wrap {
+  flex: 1; height: 100%; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.lightbox-image {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  opacity: 0; transition: opacity 0.4s var(--ease);
+}
+.lightbox-image.loaded { opacity: 1; }
+.lightbox-loader {
+  position: absolute; width: 32px; height: 32px;
+  border: 2px solid var(--line); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+.lightbox-image.loaded ~ .lightbox-loader { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.lightbox-info {
+  width: 340px; flex-shrink: 0; padding: 0 0 0 32px;
+  border-left: 1px solid var(--line); height: 80%;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow-y: auto;
+}
+.lightbox-info-group {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px;
+}
+.lightbox-info-title {
+  font-family: var(--serif-cn); font-size: 26px; font-weight: 400;
+  line-height: 1.2; margin-bottom: 6px;
+}
+.lightbox-info-subtitle {
+  font-family: var(--serif); font-style: italic; font-size: 16px;
+  color: var(--text-1); margin-bottom: 20px;
+}
+.lightbox-info-meta {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 20px;
+  padding-bottom: 20px; border-bottom: 1px solid var(--line);
+}
+.lightbox-info-meta span { font-size: 13px; color: var(--text-1); }
+.lightbox-info-meta span::before { content: '·'; margin-right: 12px; color: var(--text-2); }
+.lightbox-info-meta span:first-child::before { display: none; }
+.lightbox-info-desc {
+  font-size: 14px; line-height: 1.7; color: var(--text-1);
+  margin-bottom: 20px;
+}
+.lightbox-info-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.lightbox-info-tag {
+  font-size: 12px; color: var(--text-1); letter-spacing: 0.05em;
+  padding: 4px 12px; border: 1px solid var(--line); border-radius: 2px;
+}
+.lightbox-info-status {
+  font-size: 12px; color: var(--text-2); letter-spacing: 0.1em;
+  padding: 4px 12px; border: 1px solid var(--line); border-radius: 2px;
+  align-self: flex-start;
+}
+
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+  z-index: 10;
+}
+.lightbox-nav:hover { background: rgba(255,255,255,0.12); }
+.lightbox-nav svg { width: 20px; height: 20px; stroke: var(--text-0); }
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+.lightbox-prev:hover { transform: translateY(-50%) translateX(-4px); }
+.lightbox-next:hover { transform: translateY(-50%) translateX(4px); }
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(120px);
+  background: var(--bg-3); border: 1px solid var(--accent-soft);
+  color: var(--text-0); padding: 16px 28px; border-radius: 4px;
+  font-size: 14px; z-index: 300; display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transition: transform 0.5s var(--ease);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast svg { width: 20px; height: 20px; stroke: var(--accent); }
+
+/* ===== Scroll Reveal ===== */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== Mobile Menu ===== */
+.mobile-menu {
+  position: fixed; inset: 0; z-index: 99;
+  background: var(--bg-0); padding: 80px 32px 32px;
+  display: flex; flex-direction: column; gap: 0;
+  transform: translateX(100%); transition: transform 0.4s var(--ease);
+}
+.mobile-menu.open { transform: translateX(0); }
+.mobile-menu a {
+  font-family: var(--serif-cn); font-size: 28px; font-weight: 300;
+  padding: 20px 0; border-bottom: 1px solid var(--line);
+  color: var(--text-0);
+}
+.mobile-menu a:hover { color: var(--accent); }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .nav { padding: 16px 32px; }
+  .nav.scrolled { padding: 12px 32px; }
+  .section { padding: 80px 32px; }
+  .hero { padding: 0 32px 64px; }
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .pricing-grid { grid-template-columns: 1fr; gap: 24px; }
+  .price-card.featured { transform: translateY(0); }
+  .price-card { min-height: 480px; }  .footer { padding: 32px; flex-direction: column; gap: 16px; text-align: center; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .nav { padding: 14px 20px; }
+  .nav.scrolled { padding: 10px 20px; }
+  .section { padding: 64px 20px; }
+  .hero { padding: 0 20px 48px; }
+  .portfolio-grid { grid-template-columns: 1fr; gap: 16px; }
+  .form-row { grid-template-columns: 1fr; gap: 16px; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .locations-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .filters { gap: 6px; }
+  .filter-btn { padding: 6px 12px; font-size: 12px; }
+  .filter-count { display: none; }
+  .lightbox-body { flex-direction: column; padding: 0 16px; gap: 16px; }
+  .lightbox-info {
+    width: 100%; border-left: none; border-top: 1px solid var(--line);
+    padding: 20px 0 0; height: auto; max-height: 35vh;
+  }
+  .lightbox-nav { width: 40px; height: 40px; }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
+  .lightbox-topbar { padding: 16px; }
+  .section-header { margin-bottom: 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-logo" onclick="scrollToTop()">夏至<span>Xia Zhi</span></div>
+  <div class="nav-links">
+    <a class="nav-link" data-target="hero">首页</a>
+    <a class="nav-link" data-target="portfolio">作品</a>
+    <a class="nav-link" data-target="about">关于</a>
+    <a class="nav-link" data-target="pricing">价格</a>
+    <a class="nav-cta" data-target="contact">预约拍摄</a>
+  </div>
+  <div class="nav-burger" id="burger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a data-target="hero" onclick="mobileNav('hero')">首页</a>
+  <a data-target="portfolio" onclick="mobileNav('portfolio')">作品</a>
+  <a data-target="about" onclick="mobileNav('about')">关于</a>
+  <a data-target="contact" onclick="mobileNav('contact')">预约拍摄</a>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-slides" id="heroSlides">
+    <div class="hero-slide active"></div>
+    <div class="hero-slide"></div>
+    <div class="hero-slide"></div>
+    <div class="hero-slide"></div>
+    <div class="hero-slide"></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Hanfu · Portrait · Art Photography</div>
+    <h1 class="hero-name">夏至<em>Xia Zhi</em></h1>
+    <p class="hero-sub">汉服人像<span>·</span>古风写真<span>·</span>东方美学</p>
+  </div>
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+  <!-- Music Button -->
+  <div class="music-btn playing" id="musicBtn" onclick="handleMusicClick(event)">
+    <svg class="music-icon-play" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V5l12-2v13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke-width="1.5"/>
+      <circle cx="18" cy="16" r="3" stroke-width="1.5"/>
+    </svg>
+    <svg class="music-icon-pause" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V5l12-2v13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke-width="1.5"/>
+      <circle cx="18" cy="16" r="3" stroke-width="1.5"/>
+    </svg>
+    <svg class="music-icon-muted" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V5l12-2v13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke-width="1.5"/>
+      <circle cx="18" cy="16" r="3" stroke-width="1.5"/>
+      <line x1="4" y1="4" x2="20" y2="20" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <input type="file" id="musicFile" accept="audio/*" style="display:none" onchange="handleMusicUpload(event)">
+  <audio id="uploadedAudio" loop></audio>
+</section>
+
+<!-- Portfolio -->
+<section class="section portfolio" id="portfolio">
+  <div class="section-header reveal">
+    <div class="section-label">Selected Works</div>
+    <h2 class="section-title">作品<em>2025 — 2026</em></h2>
+  </div>
+  <div class="filters reveal" id="filters">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="tang">唐风雅韵</button>
+    <button class="filter-btn" data-filter="song">宋韵清雅</button>
+    <button class="filter-btn" data-filter="ming">明制端庄</button>
+    <button class="filter-btn" data-filter="outdoor">山水外景</button>
+    <button class="filter-btn" data-filter="studio">影棚创作</button>
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+  <div class="portfolio-grid" id="portfolioGrid"></div>
+</section>
+
+<!-- About -->
+<section class="section about" id="about">
+  <div class="section-header reveal">
+    <div class="section-label">About</div>
+    <h2 class="section-title">关于<em>The Photographer</em></h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p><strong>夏至</strong>，常驻开封·郑州，可出差。专注于<strong>汉服人像摄影</strong>，以东方美学为底色，在古风意境与现代审美之间寻找平衡。</p>
+      <p>从大唐的雍容华贵到宋朝的清雅含蓄，从明制的端庄大气到山野间的仙袂飘飘——每一套汉服都有其特定的气韵与光影语言。我倾向于在自然光下捕捉衣袂与风的关系，让丝绸的流动成为画面的一部分。</p>
+      <p>提供从服装搭配建议、妆造方案到场景选勘的一体化服务，亦接受自带服装与妆造的拍摄委托。合作品牌包括汉服品牌、文化机构及个人写真客户。</p>
+    </div>
+    <div class="about-info reveal">
+      <div class="about-info-item">
+        <span class="about-info-label">城市</span>
+        <span class="about-info-value">开封·郑州 / 可出差</span>
+      </div>
+      <div class="about-info-item">
+        <span class="about-info-label">方向</span>
+        <span class="about-info-value">汉服 · 古风 · 人像</span>
+      </div>
+      <div class="about-info-item">
+        <span class="about-info-label">合作模式</span>
+        <span class="about-info-value">个人写真 + 品牌合作</span>
+      </div>
+      <div class="about-info-item">
+        <span class="about-info-label">服装造型</span>
+        <span class="about-info-value">提供搭配建议</span>
+      </div>
+      <div class="about-info-item">
+        <span class="about-info-label">邮箱</span>
+        <span class="about-info-value">xiazhi.hanfu@example.com</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section pricing" id="pricing">
+  <div class="section-header reveal">
+    <div class="section-label">Pricing & Packages</div>
+    <h2 class="section-title">拍摄价格<em>Pricing</em></h2>
+  </div>
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <img class="price-card-img" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Hanfu%20portrait%20of%20a%20young%20woman%20in%20simple%20elegant%20Song%20dynasty%20beizi%2C%20standing%20in%20a%20tranquil%20garden%20with%20soft%20morning%20light%2C%20minimalist%20composition%2C%20natural%20warm%20tones%2C%20professional%20photography&image_size=landscape_4_3" alt="清雅集示例">
+      <div class="price-card-body">
+        <div class="price-name">清雅集</div>
+        <div class="price-name-en">Essential</div>
+        <div class="price-amount">¥199</div>
+        <div class="price-unit">起 / 单人单场景</div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>1 个拍摄场景（开封/郑州）</li>
+          <li>清明上河园 / 万岁山 / 翰园碑林 / 铁塔公园</li>
+          <li>约 2 小时拍摄时长</li>
+          <li>精修交付 15 张</li>
+          <li>底片全部赠送</li>
+          <li>线上选片</li>
+          <li class="excluded">不含妆造与服装租赁</li>
+        </ul>
+        <div class="price-note">适合个人写真 · 首次体验</div>
+      </div>
+    </div>
+    <div class="price-card featured">
+      <img class="price-card-img" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Hanfu%20portrait%20of%20a%20woman%20in%20ornate%20Tang%20dynasty%20qixiong%20ruqun%20with%20golden%20hairpin%2C%20at%20an%20ancient%20pavilion%20during%20golden%20hour%2C%20luxurious%20silk%20flowing%2C%20cinematic%20photography&image_size=landscape_4_3" alt="锦绣集示例">
+      <div class="price-card-body">
+        <div class="price-badge">热门</div>
+        <div class="price-name">锦绣集</div>
+        <div class="price-name-en">Premium</div>
+        <div class="price-amount">¥288</div>
+        <div class="price-unit">起 / 单人全日</div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>2 个拍摄场景（可换装1次）</li>
+          <li>清明上河园 / 万岁山 / 翰园碑林 / 铁塔公园</li>
+          <li>全日拍摄（黄金时刻+1时段）</li>
+          <li>精修交付 30 张</li>
+          <li>底片全部赠送</li>
+          <li>含妆造服务</li>
+          <li>含1套汉服租赁</li>
+          <li>道具搭配与场景推荐</li>
+        </ul>
+        <div class="price-note">最受欢迎 · 品质之选</div>
+      </div>
+    </div>
+    <div class="price-card">
+      <img class="price-card-img" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Hanfu%20photoshoot%20of%20two%20women%20in%20different%20exquisite%20Ming%20dynasty%20hanfu%20at%20a%20grand%20ancient%20palace%20courtyard%2C%20multiple%20costumes%2C%20professional%20team%20shoot%2C%20wide%20cinematic%20composition&image_size=landscape_4_3" alt="定制集示例">
+      <div class="price-card-body">
+        <div class="price-name">定制集</div>
+        <div class="price-name-en">Bespoke</div>
+        <div class="price-amount">¥388</div>
+        <div class="price-unit">起 / 多人多日</div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li>不限场景数量</li>
+          <li>清明上河园 / 万岁山 / 翰园碑林 / 铁塔公园等</li>
+          <li>多日拍摄（含出差外景）</li>
+          <li>精修交付 50+ 张</li>
+          <li>底片+原片RAW全部交付</li>
+          <li>含妆造团队跟场</li>
+          <li>含多套汉服租赁</li>
+          <li>含出差交通与住宿</li>
+          <li>可加视频花絮拍摄</li>
+        </ul>
+        <div class="price-note">适合拍摄合集 · 品牌合作</div>
+      </div>
+    </div>
+  </div>
+  <div class="locations reveal">
+    <div class="locations-label">推荐取景地</div>
+    <div class="locations-grid">
+      <div class="location-card">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Qingming%20Shanghe%20Yuan%20Kaifeng%2C%20Song%20dynasty%20style%20ancient%20architecture%2C%20bridge%20over%20river%2C%20traditional%20pavilions%2C%20warm%20sunset%20light%2C%20cinematic%20landscape%20photography&image_size=portrait_4_3" alt="清明上河园">
+        <div class="location-card-overlay">
+          <div class="location-card-name">清明上河园</div>
+          <div class="location-card-tag">宋韵古风</div>
+        </div>
+      </div>
+      <div class="location-card">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Wansuishan%20Kaifeng%20ancient%20mountain%20fortress%2C%20martial%20arts%20atmosphere%2C%20stone%20walls%2C%20dramatic%20cloudy%20sky%2C%20wuxia%20film%20style%20photography&image_size=portrait_4_3" alt="万岁山">
+        <div class="location-card-overlay">
+          <div class="location-card-name">万岁山</div>
+          <div class="location-card-tag">江湖武侠</div>
+        </div>
+      </div>
+      <div class="location-card">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Hanlin%20Stele%20Garden%20Kaifeng%2C%20ancient%20Chinese%20calligraphy%20stone%20tablets%2C%20bamboo%20grove%2C%20soft%20morning%20mist%2C%20serene%20scholarly%20atmosphere%2C%20photography&image_size=portrait_4_3" alt="翰园碑林">
+        <div class="location-card-overlay">
+          <div class="location-card-name">翰园碑林</div>
+          <div class="location-card-tag">书法雅集</div>
+        </div>
+      </div>
+      <div class="location-card">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Kaifeng%20Iron%20Pagoda%20Park%2C%20ancient%20brick%20pagoda%2C%20autumn%20foliage%2C%20golden%20hour%20light%2C%20peaceful%20Buddhist%20atmosphere%2C%20photography&image_size=portrait_4_3" alt="铁塔公园">
+        <div class="location-card-overlay">
+          <div class="location-card-name">铁塔公园</div>
+          <div class="location-card-tag">古塔禅意</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pricing-contact reveal" id="contact">
+    <p class="pricing-contact-text">心有所动，便是有缘。<br>扫码加微信，备注「汉服拍摄」，聊聊你的构想。</p>
+    <div class="wechat-card">
+      <div class="wechat-qr">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" fill="#fff"/>
+          <g fill="#3a3125">
+            <rect x="10" y="10" width="20" height="20"/><rect x="15" y="15" width="10" height="10" fill="#fff"/>
+            <rect x="70" y="10" width="20" height="20"/><rect x="75" y="15" width="10" height="10" fill="#fff"/>
+            <rect x="10" y="70" width="20" height="20"/><rect x="15" y="75" width="10" height="10" fill="#fff"/>
+            <rect x="40" y="10" width="10" height="10"/><rect x="55" y="10" width="10" height="10"/>
+            <rect x="10" y="40" width="10" height="10"/><rect x="10" y="55" width="10" height="10"/>
+            <rect x="40" y="70" width="10" height="10"/><rect x="55" y="70" width="10" height="10"/>
+            <rect x="70" y="40" width="10" height="10"/><rect x="80" y="40" width="10" height="10"/>
+            <rect x="70" y="55" width="10" height="10"/><rect x="85" y="55" width="5" height="10"/>
+            <rect x="40" y="40" width="10" height="10"/><rect x="50" y="50" width="10" height="10"/>
+            <rect x="60" y="40" width="10" height="10"/><rect x="30" y="30" width="5" height="5"/>
+            <rect x="65" y="65" width="5" height="5"/><rect x="40" y="80" width="5" height="5"/>
+            <rect x="80" y="80" width="10" height="10"/><rect x="40" y="25" width="5" height="5"/>
+            <rect x="25" y="40" width="5" height="5"/><rect x="60" y="25" width="5" height="5"/>
+            <rect x="25" y="60" width="5" height="5"/><rect x="60" y="60" width="5" height="5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="wechat-label">微信扫码添加</div>
+      <div class="wechat-id">xia_zhi_hanfu</div>
+    </div>
+    <p class="pricing-extra">出差拍摄差旅另计 · 加急交付 +30% · 商用授权另议<br>所有套餐含后期调色 · 不满意可重修一次</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-logo">夏至<span>Xia Zhi</span></div>
+  <div class="footer-copy">© 2026 Xia Zhi Studio · Hanfu Portrait Photography · All Rights Reserved</div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="lightbox-topbar">
+      <div class="lightbox-counter"><span id="lbCurrent">01</span> / <span id="lbTotal">09</span></div>
+      <button class="lightbox-close" onclick="closeLightbox()">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="lightbox-body">
+      <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="lightbox-image-wrap">
+        <img class="lightbox-image" id="lbImage" alt="">
+        <div class="lightbox-loader" id="lbLoader"></div>
+      </div>
+      <div class="lightbox-info" id="lbInfo"></div>
+      <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span id="toastMsg">提示信息</span>
+</div>
+
+<script>
+// ===== Image API helper =====
+var API_BASE = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image';
+function apiImg(prompt, size) {
+  return API_BASE + '?prompt=' + encodeURIComponent(prompt) + '&image_size=' + (size || 'portrait_4_3');
+}
+
+// ===== Project Data =====
+var projects = [
+  // ===== 唐风雅韵 =====
+  {
+    id: 'tang-palace', group: 'tang', groupLabel: '唐风雅韵',
+    title: '大唐明堂', subtitle: 'Tang Mingtang Hall',
+    date: '2025.05', location: '洛阳', condition: '黄昏黄金时刻',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, a young Chinese woman wearing Tang dynasty style high-waisted ruqun dress with flowing silk ribbons, standing in ancient palace courtyard at golden sunset, elegant posture, ornate hair accessories, rich red and gold silk fabric, warm cinematic lighting, professional fashion photography'),
+    desc: '唐制齐胸襦裙在明堂前的再现。洛阳紫微城明堂的建筑轮廓在落日余晖中勾勒出盛唐气象，大红织金丝绸在暖光中流转出绸缎特有的光泽，高髻步摇与披帛的线条呼应了大唐雍容与自信。',
+    tags: ['齐胸襦裙', '步摇', '披帛', '黄金时刻']
+  },
+  {
+    id: 'tang-spring', group: 'tang', groupLabel: '唐风雅韵',
+    title: '春日游园', subtitle: 'Spring Garden Party',
+    date: '2025.04', location: '洛阳', condition: '春日柔光',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese woman in Tang dynasty spring outfit, light green and pink silk ruqun dress, walking in blooming peony garden, soft spring daylight, petals falling, hairpins with flowers, gentle smile, ethereal beauty, professional portrait photography'),
+    desc: '洛阳牡丹花期中的唐制游园。淡绿与粉白配色呼应初春的柔嫩质感，牡丹花瓣随风落入衣袂间，呈现一种"春风十里不如你"的轻盈叙事。',
+    tags: ['唐制', '牡丹', '柔光', '外景']
+  },
+  {
+    id: 'tang-round', group: 'tang', groupLabel: '唐风雅韵',
+    title: '圆领袍·少年游', subtitle: 'Round Collar Robe Wanderer',
+    date: '2026.01', location: '开封城墙', condition: '冬日斜阳',
+    status: '即将发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese man wearing Tang dynasty round collar robe yuanlingpao in deep blue and gold embroidery, standing against ancient city wall of Kaifeng, winter sunset light, confident and heroic posture, leather belt and boots, masculine elegance, professional photography'),
+    desc: '唐制圆领袍的少年气。开封古城墙的青砖在冬日斜阳中投下长长的影子，深蓝底织金纹样在光影中显出冷峻的金属质感，革带与皂靴的组合呈现大唐男装的利落与英武。',
+    tags: ['圆领袍', '男装', '英武', '冬日']
+  },
+  // ===== 宋韵清雅 =====
+  {
+    id: 'song-tea', group: 'song', groupLabel: '宋韵清雅',
+    title: '松风煮茶', subtitle: 'Pine Wind Tea Ceremony',
+    date: '2025.09', location: '嵩山', condition: '阴天漫射光',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese woman in Song dynasty beizi style hanfu, muted earth tone colors beige and gray, sitting at low tea table in ancient mountain temple pavilion among pine trees, overcast soft daylight, holding ceramic teacup, understated elegance, wabi-sabi aesthetic, professional photography'),
+    desc: '宋制褙子在嵩山松间的清雅。素色褙子与抹胸的叠穿层次体现了宋人尚简的审美哲学，阴天漫射光下，素纱的肌理与古寺的质感共同构成一种"淡而有味"的画面。',
+    tags: ['褙子', '茶席', '漫射光', '宋韵']
+  },
+  {
+    id: 'song-reading', group: 'song', groupLabel: '宋韵清雅',
+    title: '书房灯下', subtitle: 'Lamplight Reading',
+    date: '2025.11', location: '开封', condition: '室内灯光',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese woman in Song dynasty style beizi hanfu in soft gray green color, sitting at antique wooden desk reading scroll by candlelight, warm amber glow, ink brush and paper, scholarly atmosphere, intimate and quiet mood, professional photography'),
+    desc: '宋制褙子在书房灯下的清读。烛光为唯一的暖色光源，在素色衣料上勾出柔和的明暗交界线，呼应宋人"夜读"题材绘画中的光影处理。',
+    tags: ['褙子', '书房', '烛光', '夜读']
+  },
+  {
+    id: 'song-rain', group: 'song', groupLabel: '宋韵清雅',
+    title: '雨巷油纸伞', subtitle: 'Umbrella in Rain Alley',
+    date: '2026.02', location: '朱仙镇', condition: '雨后',
+    status: '即将发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese woman in Song dynasty style hanfu in light blue and white, holding traditional oil paper umbrella, walking in narrow rain-soaked stone alley of ancient town, misty atmosphere, reflection on wet ground, melancholic beauty, soft diffused light, professional photography'),
+    desc: '宋制在朱仙镇雨巷中的行走。淡青褙子与白纱裙在雨幕中呈现出水墨般的渐变层次，油纸伞的竹骨在透光中勾勒出几何线条，将古巷烟雨的意象推向宋画的留白美学。',
+    tags: ['褙子', '雨景', '油纸伞', '古镇']
+  },
+  // ===== 明制端庄 =====
+  {
+    id: 'ming-mamian', group: 'ming', groupLabel: '明制端庄',
+    title: '马面裙·龙亭', subtitle: 'Mamian Skirt at Dragon Pavilion',
+    date: '2025.08', location: '开封龙亭', condition: '秋日午后',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese woman in Ming dynasty aoqun outfit with mamian skirt in deep red and gold woven pattern, standing before ancient vermillion palace gate and pavilion, autumn afternoon light, dignified posture, embroidered jacket, elaborate hair bun, professional photography'),
+    desc: '明制袄裙与马面裙在龙亭前的端庄。织金马面裙的褶裥在静止中呈现出建筑般的结构感，朱红袄与宋都宫阙形成色彩呼应，构成大明礼仪之美的视觉宣言。',
+    tags: ['马面裙', '袄裙', '端庄', '宫阙']
+  },
+  {
+    id: 'ming-dragon', group: 'ming', groupLabel: '明制端庄',
+    title: '道袍·山寺', subtitle: 'Daoist Robe at Mountain Temple',
+    date: '2025.12', location: '嵩山', condition: '冬日山林',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese man in Ming dynasty daopao robe in dark green and black with subtle embroidery, standing in ancient mountain temple with cypress trees, winter misty light filtering through, contemplative expression, wide sleeves draping, scholarly and refined, professional photography'),
+    desc: '明制道袍在嵩山古寺中的清修。暗绿道袍与苍柏形成同色系深浅变化，广袖在山间微风中自然垂落，古寺钟声与松涛共鸣，呈现一种"林下之风"的隐逸气质。',
+    tags: ['道袍', '古寺', '隐逸', '男装']
+  },
+  // ===== 山水外景 =====
+  {
+    id: 'outdoor-lake', group: 'outdoor', groupLabel: '山水外景',
+    title: '湖畔仙袂', subtitle: 'Lake Shore Drifting Sleeves',
+    date: '2025.06', location: '开封龙亭湖', condition: '清晨薄雾',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese woman in flowing white and light blue hanfu with wide sleeves, standing at misty lake shore at dawn with ancient palace in background, silk fabric catching morning breeze, willow trees, ethereal fairy-like atmosphere, soft misty light, professional photography'),
+    desc: '龙亭湖清晨薄雾中的仙袄飘飘。白色大袖衫在湖风中展开成翼状，薄雾将远处宋宫建筑虚化为留白，水鸟低飞掠过湖面——整个画面如同一幅未完成的写意水墨。',
+    tags: ['大袖衫', '龙亭湖', '薄雾', '清晨']
+  },
+  {
+    id: 'outdoor-mountain', group: 'outdoor', groupLabel: '山水外景',
+    title: '嵩山云起', subtitle: 'Clouds Rising at Song Mountain',
+    date: '2025.10', location: '嵩山', condition: '云海',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese person in flowing dark blue and silver hanfu with long sleeves, standing on Song mountain peak above sea of clouds, dramatic wind blowing fabric, ancient pine tree, vast sky, epic and majestic atmosphere, professional photography'),
+    desc: '嵩山云海之巅的汉服行旅。深蓝大袖在山风中猎猎作响，脚下云海翻涌如潮——中岳嵩山的雄浑与汉服的飘逸形成张力，衣袂与云同为流动之物。',
+    tags: ['大袖', '嵩山', '云海', '行旅']
+  },
+  {
+    id: 'outdoor-snow', group: 'outdoor', groupLabel: '山水外景',
+    title: '雪落梅枝', subtitle: 'Snow on Plum Branches',
+    date: '2026.01', location: '开封禹王台', condition: '雪后',
+    status: '即将发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography, young Chinese woman in red and white hanfu standing in snowy plum blossom garden at ancient temple, snow falling gently, red silk fabric contrasting with white snow and pink plum flowers, serene winter scene, soft overcast light, professional photography'),
+    desc: '禹王台雪后梅园中红白相映。大红斗篷与素白雪地形成最强烈的色彩冲击，梅花枝头半融的残雪为画面增添微观层次，是"踏雪寻梅"主题在中原冬日的经典再现。',
+    tags: ['斗篷', '雪景', '梅花', '冬景']
+  },
+  // ===== 影棚创作 =====
+  {
+    id: 'studio-ink', group: 'studio', groupLabel: '影棚创作',
+    title: '墨色系列', subtitle: 'Ink Wash Series',
+    date: '2025.07', location: '郑州影棚', condition: '影棚布光',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography studio shot, young Chinese woman in black and dark gray hanfu with white inner layer, dramatic side lighting against dark background, ink wash painting aesthetic, fabric draping elegantly, minimalist composition, fine art photography'),
+    desc: '影棚墨色系列。纯黑背景下单侧柔光勾勒出衣褶的明暗交界线，黑白灰三色在丝绸上形成类水墨的渲染效果，是汉服从"古风写真"走向"艺术摄影"的尝试。',
+    tags: ['影棚', '墨色', '侧光', '极简']
+  },
+  {
+    id: 'studio-fan', group: 'studio', groupLabel: '影棚创作',
+    title: '团扇·凝香', subtitle: 'Round Fan and Fragrance',
+    date: '2025.09', location: '开封影棚', condition: '影棚布光',
+    status: '已发布', hasImage: true,
+    image: apiImg('Hanfu portrait photography studio shot, close-up of young Chinese woman in pastel pink hanfu holding traditional silk round fan tuanshan, soft beauty lighting, flower-patterned fan covering lower face, intimate portrait, delicate makeup, professional photography'),
+    desc: '影棚团扇特写。团扇半遮面的构图借鉴了唐人仕女图的经典视角，柔和正面光突出面部与扇面的细节质感，扇面工笔花卉与妆面的精致形成微观层面的对话。',
+    tags: ['团扇', '特写', '仕女', '柔光']
+  }
+];
+
+// ===== Hero Slideshow =====
+var heroImages = [
+  apiImg('Hanfu portrait photography hero shot, elegant young Chinese woman in flowing Tang dynasty red and gold silk ruqun dress, standing in ancient palace courtyard at golden sunset, dramatic backlight creating silhouette glow, wide sleeves catching wind, cinematic atmosphere, professional fashion photography', 'landscape_16_9'),
+  apiImg('Hanfu portrait photography hero shot, young Chinese woman in Song dynasty beizi style hanfu in soft green and beige, walking in misty bamboo forest, ethereal atmosphere, soft diffused daylight, flowing silk fabric, artistic photography', 'landscape_16_9'),
+  apiImg('Hanfu portrait photography hero shot, young Chinese woman in Ming dynasty aoqun with mamian skirt in deep red and gold, standing before vermillion palace gate, autumn afternoon light, dignified and elegant, professional portrait photography', 'landscape_16_9'),
+  apiImg('Hanfu portrait photography hero shot, young Chinese woman in flowing white hanfu with wide sleeves, standing at misty lake shore at dawn with willow trees, silk fabric catching morning breeze, ethereal fairy-like atmosphere, cinematic', 'landscape_16_9'),
+  apiImg('Hanfu portrait photography hero shot, young Chinese woman in pink and white hanfu holding round fan, standing in blooming plum garden with falling petals, spring golden hour light, dreamy romantic atmosphere, professional fashion photography', 'landscape_16_9')
+];
+
+var heroSlides = document.querySelectorAll('.hero-slide');
+var heroCurrent = 0;
+heroSlides.forEach(function(slide, i) {
+  slide.style.backgroundImage = "url('" + heroImages[i] + "')";
+});
+
+function nextHeroSlide() {
+  var prev = heroCurrent;
+  heroCurrent = (heroCurrent + 1) % heroSlides.length;
+  heroSlides[prev].classList.remove('active');
+  heroSlides[prev].classList.add('prev');
+  heroSlides[heroCurrent].classList.add('active');
+  // Reset prev after transition
+  setTimeout(function() {
+    heroSlides[prev].classList.remove('prev');
+  }, 1800);
+}
+
+setInterval(nextHeroSlide, 6000);
+
+// ===== Guzheng-style Ambient Music (Web Audio API) =====
+var audioCtx = null;
+var isPlaying = false;
+var musicGain = null;
+var melodyTimer = null;
+var droneOsc = null;
+var droneGain = null;
+var musicMode = 'generated';
+var uploadedAudio = document.getElementById('uploadedAudio');
+var clickTimer = null;
+var clickCount = 0;
+var userPaused = false;
+
+var pentatonic = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00];
+var melodyPattern = [
+  { step: 0, dur: 1.2 }, { step: 2, dur: 0.8 }, { step: 4, dur: 1.5 },
+  { step: 2, dur: 0.6 }, { step: 3, dur: 1.0 }, { step: 0, dur: 1.3 },
+  { step: 5, dur: 1.8 }, { step: 4, dur: 0.7 }, { step: 3, dur: 1.1 },
+  { step: 2, dur: 0.9 }, { step: 1, dur: 1.4 }, { step: 0, dur: 2.0 }
+];
+var melodyIndex = 0;
+var melodyVariation = 0;
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  musicGain = audioCtx.createGain();
+  musicGain.gain.value = 0;
+  musicGain.connect(audioCtx.destination);
+
+  droneGain = audioCtx.createGain();
+  droneGain.gain.value = 0.08;
+  droneGain.connect(musicGain);
+
+  droneOsc = audioCtx.createOscillator();
+  droneOsc.type = 'sine';
+  droneOsc.frequency.value = 130.81;
+  droneOsc.connect(droneGain);
+  droneOsc.start();
+
+  var drone2 = audioCtx.createOscillator();
+  drone2.type = 'sine';
+  drone2.frequency.value = 196.00;
+  var droneGain2 = audioCtx.createGain();
+  droneGain2.gain.value = 0.04;
+  drone2.connect(droneGain2);
+  droneGain2.connect(musicGain);
+  drone2.start();
+}
+
+function playNote(freq, duration, time, volume) {
+  if (!audioCtx) return;
+  var now = time || audioCtx.currentTime;
+  var vol = volume || 0.15;
+
+  var osc = audioCtx.createOscillator();
+  osc.type = 'sine'; osc.frequency.value = freq;
+  var noteGain = audioCtx.createGain();
+  noteGain.gain.setValueAtTime(0, now);
+  noteGain.gain.linearRampToValueAtTime(vol, now + 0.08);
+  noteGain.gain.exponentialRampToValueAtTime(vol * 0.6, now + duration * 0.6);
+  noteGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+  var harm = audioCtx.createOscillator();
+  harm.type = 'sine'; harm.frequency.value = freq * 2;
+  var harmGain = audioCtx.createGain();
+  harmGain.gain.setValueAtTime(0, now);
+  harmGain.gain.linearRampToValueAtTime(vol * 0.15, now + 0.1);
+  harmGain.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.8);
+
+  osc.connect(noteGain); harm.connect(harmGain);
+  noteGain.connect(musicGain); harmGain.connect(musicGain);
+  osc.start(now); harm.start(now);
+  osc.stop(now + duration + 0.1); harm.stop(now + duration + 0.1);
+
+  var pluck = audioCtx.createOscillator();
+  pluck.type = 'triangle'; pluck.frequency.value = freq;
+  var pluckGain = audioCtx.createGain();
+  pluckGain.gain.setValueAtTime(0, now);
+  pluckGain.gain.linearRampToValueAtTime(vol * 0.3, now + 0.005);
+  pluckGain.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.3);
+  pluck.connect(pluckGain); pluckGain.connect(musicGain);
+  pluck.start(now); pluck.stop(now + duration * 0.35);
+}
+
+function scheduleMelody() {
+  if (!audioCtx || !isPlaying || musicMode !== 'generated') return;
+  var pattern = melodyPattern[melodyIndex];
+  var baseIdx = pattern.step + melodyVariation;
+  while (baseIdx < 0) baseIdx += 5;
+  while (baseIdx >= pentatonic.length) baseIdx -= 5;
+  playNote(pentatonic[baseIdx], pattern.dur, audioCtx.currentTime, 0.12);
+  if (Math.random() < 0.3 && baseIdx >= 5) {
+    playNote(pentatonic[baseIdx] / 2, pattern.dur * 0.8, audioCtx.currentTime + 0.02, 0.06);
+  }
+  melodyIndex = (melodyIndex + 1) % melodyPattern.length;
+  if (melodyIndex === 0) melodyVariation = Math.floor(Math.random() * 3);
+  melodyTimer = setTimeout(scheduleMelody, pattern.dur * 1000 * (0.85 + Math.random() * 0.3));
+}
+
+function startGenerated() {
+  initAudio();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  isPlaying = true;
+  if (musicGain) {
+    musicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    musicGain.gain.setValueAtTime(musicGain.gain.value, audioCtx.currentTime);
+    musicGain.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 1.2);
+  }
+  melodyIndex = 0; melodyVariation = 0;
+  scheduleMelody();
+}
+
+function stopGenerated() {
+  if (melodyTimer) { clearTimeout(melodyTimer); melodyTimer = null; }
+  if (musicGain && audioCtx) {
+    musicGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    musicGain.gain.setValueAtTime(musicGain.gain.value, audioCtx.currentTime);
+    musicGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+  }
+}
+
+function startUploaded() {
+  if (uploadedAudio.src) {
+    uploadedAudio.volume = 0;
+    uploadedAudio.play().then(function() {
+      var fadeUp = setInterval(function() {
+        if (uploadedAudio.volume < 0.9) {
+          uploadedAudio.volume = Math.min(uploadedAudio.volume + 0.05, 1);
+        } else { clearInterval(fadeUp); }
+      }, 80);
+    }).catch(function() {});
+  }
+}
+
+function stopUploaded() {
+  if (uploadedAudio.src) {
+    var fadeDown = setInterval(function() {
+      if (uploadedAudio.volume > 0.05) {
+        uploadedAudio.volume = Math.max(uploadedAudio.volume - 0.05, 0);
+      } else {
+        clearInterval(fadeDown);
+        uploadedAudio.pause();
+      }
+    }, 80);
+  }
+}
+
+function playMusic() {
+  if (musicMode === 'generated') startGenerated();
+  else startUploaded();
+}
+
+function pauseMusic() {
+  if (musicMode === 'generated') stopGenerated();
+  else stopUploaded();
+}
+
+function handleMusicClick(e) {
+  if (e) { e.stopPropagation(); }
+  clickCount++;
+  if (clickCount === 1) {
+    clickTimer = setTimeout(function() {
+      clickCount = 0;
+      var btn = document.getElementById('musicBtn');
+      if (isPlaying) {
+        isPlaying = false;
+        userPaused = true;
+        btn.classList.remove('playing');
+        btn.classList.add('muted');
+        pauseMusic();
+      } else {
+        isPlaying = true;
+        userPaused = false;
+        btn.classList.remove('muted');
+        btn.classList.add('playing');
+        playMusic();
+      }
+    }, 300);
+  } else if (clickCount === 2) {
+    clearTimeout(clickTimer);
+    clickCount = 0;
+    openMusicPicker(e);
+  }
+}
+
+function openMusicPicker(e) {
+  if (e) e.preventDefault();
+  if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
+  document.getElementById('musicFile').click();
+}
+
+function handleMusicUpload(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var url = URL.createObjectURL(file);
+  var btn = document.getElementById('musicBtn');
+
+  pauseMusic();
+  musicMode = 'uploaded';
+  uploadedAudio.src = url;
+  uploadedAudio.volume = 0;
+  isPlaying = true;
+  userPaused = false;
+  btn.classList.remove('muted');
+  btn.classList.add('playing');
+  startUploaded();
+
+  var hint = btn.querySelector('::after');
+  btn.setAttribute('title', file.name);
+  showToast('正在播放：' + file.name, true);
+}
+
+// Auto-play on first user interaction (browsers block autoplay without interaction)
+function tryAutoPlay() {
+  if (userPaused) return;
+  if (isPlaying) return;
+  var btn = document.getElementById('musicBtn');
+  initAudio();
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume().then(function() {
+      if (userPaused) return;
+      if (isPlaying) return;
+      isPlaying = true;
+      btn.classList.add('playing');
+      startGenerated();
+    }).catch(function() {});
+  } else {
+    isPlaying = true;
+    btn.classList.add('playing');
+    startGenerated();
+  }
+}
+
+// 页面加载后不自动尝试播放（浏览器会阻止，留下 pending promise 反而有问题）
+// 只在用户首次交互时尝试播放
+document.addEventListener('DOMContentLoaded', function() {
+  var hasInteracted = false;
+  function firstInteraction(e) {
+    if (hasInteracted) return;
+    if (e && e.target && e.target.closest && e.target.closest('#musicBtn')) return;
+    hasInteracted = true;
+    // 用户明确暂停过就绝不自动播放
+    if (!userPaused && !isPlaying) {
+      tryAutoPlay();
+    }
+    document.removeEventListener('scroll', firstInteraction);
+    document.removeEventListener('click', firstInteraction);
+    document.removeEventListener('touchstart', firstInteraction);
+    document.removeEventListener('keydown', firstInteraction);
+    document.removeEventListener('wheel', firstInteraction);
+  }
+  document.addEventListener('scroll', firstInteraction, { passive: true });
+  document.addEventListener('click', firstInteraction);
+  document.addEventListener('touchstart', firstInteraction, { passive: true });
+  document.addEventListener('keydown', firstInteraction);
+  document.addEventListener('wheel', firstInteraction, { passive: true });
+});
+
+// ===== Render Portfolio =====
+var grid = document.getElementById('portfolioGrid');
+var filterCount = document.getElementById('filterCount');
+
+function renderPortfolio(filter) {
+  filter = filter || 'all';
+  grid.innerHTML = '';
+  var filtered = filter === 'all' ? projects : projects.filter(function(p) { return p.group === filter; });
+  filterCount.textContent = filtered.length + ' 套作品';
+
+  filtered.forEach(function(p, i) {
+    var card = document.createElement('div');
+    card.className = 'project-card' + (p.hasImage ? '' : ' no-image');
+    card.setAttribute('data-id', p.id);
+    card.style.transitionDelay = (i * 60) + 'ms';
+
+    if (p.hasImage) {
+      card.innerHTML =
+        '<img class="project-card-img" src="' + p.image + '" alt="' + p.title + '" loading="lazy">' +
+        '<div class="project-card-overlay">' +
+          '<div class="project-card-group">' + p.groupLabel + '</div>' +
+          '<div class="project-card-title">' + p.title + '</div>' +
+          '<div class="project-card-meta">' + p.date + ' · ' + p.location + '</div>' +
+        '</div>' +
+        '<div class="project-card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+    } else {
+      card.innerHTML =
+        '<div>' +
+          '<div class="project-card-group">' + p.groupLabel + '</div>' +
+          '<div class="project-card-title">' + p.title + '</div>' +
+          '<div class="project-card-meta" style="margin-top:6px">' + p.date + ' · ' + p.location + '</div>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+          '<div class="project-card-status">' + p.status + '</div>' +
+          '<div class="project-card-arrow" style="position:static;opacity:1;transform:none"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+        '</div>';
+    }
+
+    card.addEventListener('click', function() { openLightbox(p.id); });
+    grid.appendChild(card);
+  });
+
+  setTimeout(function() {
+    grid.querySelectorAll('.project-card').forEach(function(c) {
+      c.classList.add('visible');
+    });
+  }, 50);
+}
+
+renderPortfolio('all');
+
+// ===== Filters =====
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderPortfolio(btn.getAttribute('data-filter'));
+  });
+});
+
+// ===== Lightbox =====
+var lbIndex = 0;
+var lbList = [];
+var lbImage = document.getElementById('lbImage');
+var lbLoader = document.getElementById('lbLoader');
+var lbInfo = document.getElementById('lbInfo');
+var lbCurrent = document.getElementById('lbCurrent');
+var lbTotal = document.getElementById('lbTotal');
+var lightbox = document.getElementById('lightbox');
+
+function openLightbox(id) {
+  lbList = projects;
+  lbIndex = lbList.findIndex(function(p) { return p.id === id; });
+  if (lbIndex < 0) lbIndex = 0;
+  lbTotal.textContent = String(lbList.length).padStart(2, '0');
+  updateLightbox();
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navLightbox(dir) {
+  lbIndex = (lbIndex + dir + lbList.length) % lbList.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  var p = lbList[lbIndex];
+  lbCurrent.textContent = String(lbIndex + 1).padStart(2, '0');
+  lbImage.classList.remove('loaded');
+  lbLoader.style.display = 'block';
+
+  var img = new Image();
+  img.onload = function() {
+    lbImage.src = p.image;
+    lbImage.classList.add('loaded');
+    lbLoader.style.display = 'none';
+  };
+  img.onerror = function() {
+    lbImage.src = p.image;
+    lbImage.classList.add('loaded');
+    lbLoader.style.display = 'none';
+  };
+  img.src = p.image;
+
+  var metaParts = [];
+  if (p.date) metaParts.push('<span>' + p.date + '</span>');
+  if (p.location) metaParts.push('<span>' + p.location + '</span>');
+  if (p.condition) metaParts.push('<span>' + p.condition + '</span>');
+
+  var tagsHtml = (p.tags || []).map(function(t) {
+    return '<span class="lightbox-info-tag">' + t + '</span>';
+  }).join('');
+
+  lbInfo.innerHTML =
+    '<div class="lightbox-info-group">' + p.groupLabel + '</div>' +
+    '<div class="lightbox-info-title">' + p.title + '</div>' +
+    '<div class="lightbox-info-subtitle">' + p.subtitle + '</div>' +
+    '<div class="lightbox-info-meta">' + metaParts.join('') + '</div>' +
+    '<div class="lightbox-info-desc">' + p.desc + '</div>' +
+    '<div class="lightbox-info-tags">' + tagsHtml + '</div>' +
+    '<div class="lightbox-info-status">' + p.status + '</div>';
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navLightbox(-1);
+  if (e.key === 'ArrowRight') navLightbox(1);
+});
+
+// Click backdrop to close
+lightbox.addEventListener('click', function(e) {
+  if (e.target === lightbox || e.target.classList.contains('lightbox-inner') || e.target.classList.contains('lightbox-body') || e.target.classList.contains('lightbox-image-wrap')) {
+    closeLightbox();
+  }
+});
+
+// ===== Navigation =====
+var nav = document.getElementById('nav');
+var scrollProgress = document.getElementById('scrollProgress');
+var sections = ['hero', 'portfolio', 'about', 'pricing'];
+
+document.querySelectorAll('[data-target]').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = this.getAttribute('data-target');
+    var el = document.getElementById(target);
+    if (el) {
+      var rect = el.getBoundingClientRect();
+      var offset = target === 'hero' ? 0 : rect.top + window.pageYOffset - 60;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+    if (document.getElementById('mobileMenu').classList.contains('open')) {
+      toggleMobileMenu();
+    }
+  });
+});
+
+window.addEventListener('scroll', function() {
+  var st = window.pageYOffset || document.documentElement.scrollTop;
+  if (st > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+  var docH = document.documentElement.scrollHeight - window.innerHeight;
+  scrollProgress.style.width = (st / docH * 100) + '%';
+  var current = 'hero';
+  sections.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && st >= el.offsetTop - 120) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.classList.toggle('active', link.getAttribute('data-target') === current);
+  });
+  // Hero parallax on active slide
+  if (st < window.innerHeight) {
+    document.querySelectorAll('.hero-slide.active').forEach(function(slide) {
+      slide.style.transform = 'scale(1.03) translateY(' + (st * 0.2) + 'px)';
+    });
+    document.querySelectorAll('.hero-slide:not(.active)').forEach(function(slide) {
+      slide.style.transform = '';
+    });
+  }
+});
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== Mobile Menu =====
+function toggleMobileMenu() {
+  var menu = document.getElementById('mobileMenu');
+  var burger = document.getElementById('burger');
+  menu.classList.toggle('open');
+  burger.classList.toggle('active');
+}
+
+function mobileNav(target) {
+  toggleMobileMenu();
+  var el = document.getElementById(target);
+  if (el) {
+    var offset = target === 'hero' ? 0 : el.offsetTop - 60;
+    setTimeout(function() { window.scrollTo({ top: offset, behavior: 'smooth' }); }, 200);
+  }
+}
+
+// ===== Scroll Reveal =====
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(function(el) {
+  revealObserver.observe(el);
+});
+
+// ===== Toast (kept for misc messages) =====
+var toast = document.getElementById('toast');
+var toastMsg = document.getElementById('toastMsg');
+
+function showToast(msg, success) {
+  toastMsg.textContent = msg;
+  var icon = toast.querySelector('svg');
+  if (success) {
+    icon.innerHTML = '<path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+  } else {
+    icon.innerHTML = '<circle cx="12" cy="12" r="10" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke-width="1.5" stroke-linecap="round"/>';
+  }
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 4000);
+}
+
+// ===== Touch swipe for lightbox =====
+var touchStartX = 0;
+var touchEndX = 0;
+
+lightbox.addEventListener('touchstart', function(e) {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+lightbox.addEventListener('touchend', function(e) {
+  touchEndX = e.changedTouches[0].screenX;
+  var diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 50) {
+    navLightbox(diff > 0 ? 1 : -1);
+  }
+});
+</script>
+</body>
+</html>

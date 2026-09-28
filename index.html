@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沈屿｜建筑摄影</title>
+<meta name="description" content="沈屿——建筑、城市空间与室内摄影。基于上海，可出差。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-0: #0a0a0a;
+  --bg-1: #111110;
+  --bg-2: #181816;
+  --bg-3: #20201d;
+  --text-0: #e8e4dc;
+  --text-1: #9a958c;
+  --text-2: #5a5550;
+  --accent: #c4a875;
+  --accent-soft: rgba(196,168,117,0.15);
+  --line: #2a2a26;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --serif: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  --serif-cn: 'Noto Serif SC', 'Cormorant Garamond', serif;
+  --sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-0);
+  color: var(--text-0);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--accent-soft); color: var(--accent); }
+
+a { color: inherit; text-decoration: none; }
+
+img { display: block; max-width: 100%; }
+
+/* ===== Scroll Progress ===== */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: var(--accent); z-index: 999;
+  width: 0; transition: width 0.1s linear;
+}
+
+/* ===== Navigation ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 18px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,10,10,0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease), padding 0.4s var(--ease);
+}
+.nav.scrolled {
+  background: rgba(10,10,10,0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 14px 48px;
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo {
+  font-family: var(--serif-cn); font-size: 22px; font-weight: 500;
+  letter-spacing: 0.08em; color: var(--text-0);
+  cursor: pointer; transition: color 0.3s var(--ease);
+}
+.nav-logo:hover { color: var(--accent); }
+.nav-logo span { color: var(--accent); font-family: var(--serif); font-style: italic; }
+.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-link {
+  font-size: 13px; letter-spacing: 0.06em; color: var(--text-1);
+  position: relative; padding-bottom: 4px;
+  cursor: pointer; transition: color 0.3s var(--ease);
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 1px; background: var(--accent);
+  transition: width 0.3s var(--ease);
+}
+.nav-link:hover { color: var(--text-0); }
+.nav-link:hover::after { width: 100%; }
+.nav-link.active { color: var(--accent); }
+.nav-link.active::after { width: 100%; }
+.nav-cta {
+  font-size: 13px; letter-spacing: 0.06em;
+  color: var(--bg-0); background: var(--accent);
+  padding: 8px 20px; border-radius: 2px;
+  cursor: pointer; transition: opacity 0.3s var(--ease);
+}
+.nav-cta:hover { opacity: 0.85; }
+.nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
+.nav-burger span { width: 22px; height: 1.5px; background: var(--text-0); transition: 0.3s var(--ease); }
+
+/* ===== Hero ===== */
+.hero {
+  position: relative; height: 100vh; min-height: 600px;
+  display: flex; align-items: flex-end; padding: 0 48px 80px;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover; background-position: center;
+  transform: scale(1.05);
+  will-change: transform;
+}
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.2) 40%, rgba(10,10,10,0.85) 100%);
+}
+.hero-content { position: relative; z-index: 2; max-width: 720px; }
+.hero-tag {
+  font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 20px; opacity: 0;
+  animation: fadeUp 1s var(--ease) 0.3s forwards;
+}
+.hero-name {
+  font-family: var(--serif-cn); font-size: clamp(56px, 9vw, 120px);
+  font-weight: 300; line-height: 0.95; letter-spacing: -0.02em;
+  margin-bottom: 16px; opacity: 0;
+  animation: fadeUp 1.2s var(--ease) 0.5s forwards;
+}
+.hero-name em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--accent); font-size: 0.7em; display: block; margin-top: 4px;
+}
+.hero-sub {
+  font-size: 15px; letter-spacing: 0.15em; color: var(--text-1);
+  opacity: 0; animation: fadeUp 1s var(--ease) 0.8s forwards;
+}
+.hero-sub span { margin: 0 12px; color: var(--text-2); }
+.hero-scroll {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; animation: fadeUp 1s var(--ease) 1.2s forwards;
+}
+.hero-scroll span { font-size: 11px; letter-spacing: 0.2em; color: var(--text-2); }
+.hero-scroll-line {
+  width: 1px; height: 40px; background: var(--text-2);
+  position: relative; overflow: hidden;
+}
+.hero-scroll-line::after {
+  content: ''; position: absolute; top: -100%; left: 0;
+  width: 100%; height: 50%; background: var(--accent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollLine {
+  0% { top: -100%; } 50% { top: 100%; } 100% { top: 100%; }
+}
+
+/* ===== Music Player ===== */
+.music-btn {
+  position: absolute; top: 90px; right: 48px; z-index: 10;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(10,10,10,0.7); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.4s var(--ease);
+  opacity: 0; animation: fadeUp 1s var(--ease) 1.5s forwards;
+}
+.music-btn:hover {
+  background: var(--accent-soft); border-color: var(--accent);
+  transform: scale(1.08);
+}
+.music-btn.playing { border-color: var(--accent); }
+.music-btn svg { width: 20px; height: 20px; stroke: var(--accent); }
+.music-btn .music-icon-pause { display: none; }
+.music-btn .music-icon-muted { display: none; }
+.music-btn.playing .music-icon-play { display: none; }
+.music-btn.playing .music-icon-pause { display: block; }
+.music-btn.playing .music-icon-muted { display: none; }
+.music-btn.muted .music-icon-play { display: none; }
+.music-btn.muted .music-icon-pause { display: none; }
+.music-btn.muted .music-icon-muted { display: block; }
+.music-btn.playing::before {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 1px solid var(--accent);
+  animation: musicPulse 2s ease-in-out infinite;
+}
+.music-btn::after {
+  content: '单击播放/暂停 · 双击导入音乐';
+  position: absolute; top: 50%; right: 60px; transform: translateY(-50%);
+  white-space: nowrap; font-size: 12px; color: var(--text-1);
+  background: rgba(10,10,10,0.9); backdrop-filter: blur(8px);
+  padding: 6px 14px; border-radius: 2px; border: 1px solid var(--accent-soft);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease);
+}
+.music-btn:hover::after { opacity: 1; }
+@keyframes musicPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0; transform: scale(1.3); }
+}
+
+@media (max-width: 1024px) {
+  .music-btn { right: 32px; top: 70px; }
+}
+@media (max-width: 768px) {
+  .music-btn { right: 20px; top: 64px; width: 42px; height: 42px; }
+}
+
+/* ===== Section Common ===== */
+.section { padding: 120px 48px; position: relative; }
+.section-header { margin-bottom: 64px; }
+.section-label {
+  font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px;
+}
+.section-title {
+  font-family: var(--serif-cn); font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300; letter-spacing: -0.01em; line-height: 1.1;
+}
+.section-title em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--accent); font-size: 0.6em; display: block; margin-top: 8px;
+}
+
+/* ===== Portfolio ===== */
+.portfolio { background: var(--bg-1); }
+.filters {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 48px;
+  border-bottom: 1px solid var(--line); padding-bottom: 24px;
+}
+.filter-btn {
+  font-size: 13px; letter-spacing: 0.04em; color: var(--text-1);
+  background: none; border: 1px solid transparent;
+  padding: 8px 18px; cursor: pointer; border-radius: 2px;
+  transition: all 0.3s var(--ease); font-family: var(--sans);
+}
+.filter-btn:hover { color: var(--text-0); }
+.filter-btn.active {
+  color: var(--accent); border-color: var(--accent-soft);
+  background: var(--accent-soft);
+}
+.filter-count { font-size: 12px; color: var(--text-2); margin-left: auto; align-self: center; }
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.project-card {
+  position: relative; overflow: hidden; border-radius: 2px;
+  cursor: pointer; background: var(--bg-2);
+  aspect-ratio: 4/3; transition: transform 0.5s var(--ease);
+}
+.project-card.hidden { display: none; }
+.project-card-img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.7s var(--ease), filter 0.5s var(--ease);
+  filter: brightness(0.92);
+}
+.project-card:hover .project-card-img {
+  transform: scale(1.04); filter: brightness(1);
+}
+.project-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(10,10,10,0.92) 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 24px; transition: opacity 0.4s var(--ease);
+}
+.project-card-group {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+.project-card-title {
+  font-family: var(--serif-cn); font-size: 20px; font-weight: 400;
+  line-height: 1.3; margin-bottom: 4px;
+}
+.project-card-meta {
+  font-size: 12px; color: var(--text-1); letter-spacing: 0.03em;
+}
+.project-card-arrow {
+  position: absolute; top: 20px; right: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: translateY(-8px);
+  transition: all 0.4s var(--ease);
+}
+.project-card:hover .project-card-arrow {
+  opacity: 1; transform: translateY(0);
+}
+.project-card-arrow svg { width: 14px; height: 14px; stroke: var(--text-0); }
+
+/* Text-only card (no image) */
+.project-card.no-image {
+  background: var(--bg-2); display: flex; flex-direction: column;
+  justify-content: space-between; padding: 28px;
+  border: 1px solid var(--line);
+}
+.project-card.no-image .project-card-group { color: var(--accent); }
+.project-card.no-image .project-card-title { font-size: 22px; }
+.project-card.no-image .project-card-status {
+  font-size: 11px; color: var(--text-2); letter-spacing: 0.1em;
+  padding: 4px 10px; border: 1px solid var(--line); border-radius: 2px;
+  align-self: flex-start;
+}
+.project-card.no-image:hover {
+  border-color: var(--accent-soft); background: var(--bg-3);
+}
+
+/* ===== About ===== */
+.about { background: var(--bg-0); }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: start;
+}
+.about-text { font-size: 17px; line-height: 1.8; color: var(--text-1); }
+.about-text p { margin-bottom: 20px; }
+.about-text strong { color: var(--text-0); font-weight: 500; }
+.about-info { display: flex; flex-direction: column; gap: 0; }
+.about-info-item {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 20px 0; border-bottom: 1px solid var(--line);
+}
+.about-info-item:last-child { border-bottom: none; }
+.about-info-label { font-size: 12px; letter-spacing: 0.15em; color: var(--text-2); text-transform: uppercase; }
+.about-info-value { font-family: var(--serif); font-size: 18px; color: var(--text-0); }
+
+/* ===== Inquiry ===== */
+.inquiry { background: var(--bg-1); }
+.inquiry-grid {
+  display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px;
+  align-items: start;
+}
+.inquiry-left p { color: var(--text-1); font-size: 16px; line-height: 1.7; margin-bottom: 32px; }
+.inquiry-contact { display: flex; flex-direction: column; gap: 16px; }
+.inquiry-contact-item {
+  padding: 16px 0; border-bottom: 1px solid var(--line);
+}
+.inquiry-contact-label { font-size: 12px; letter-spacing: 0.15em; color: var(--text-2); text-transform: uppercase; margin-bottom: 6px; }
+.inquiry-contact-value { font-family: var(--serif); font-size: 18px; color: var(--text-0); }
+
+.inquiry-form { display: flex; flex-direction: column; gap: 24px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-label {
+  font-size: 12px; letter-spacing: 0.1em; color: var(--text-1);
+  text-transform: uppercase; display: flex; align-items: center; gap: 6px;
+}
+.form-label .req { color: var(--accent); }
+.form-input, .form-select, .form-textarea {
+  background: var(--bg-2); border: 1px solid var(--line);
+  color: var(--text-0); padding: 12px 16px; font-size: 15px;
+  font-family: var(--sans); border-radius: 2px;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+  outline: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--accent); background: var(--bg-3);
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--text-2); }
+.form-textarea { resize: vertical; min-height: 100px; }
+.form-select { appearance: none; -webkit-appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a958c' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center;
+  padding-right: 40px;
+}
+.form-select option { background: var(--bg-2); }
+.form-checkbox-group { display: flex; flex-wrap: wrap; gap: 12px; }
+.form-checkbox {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 10px 16px; border: 1px solid var(--line); border-radius: 2px;
+  font-size: 14px; color: var(--text-1); transition: all 0.3s var(--ease);
+}
+.form-checkbox input { accent-color: var(--accent); width: 16px; height: 16px; }
+.form-checkbox:has(input:checked) {
+  border-color: var(--accent-soft); background: var(--accent-soft); color: var(--text-0);
+}
+.form-submit {
+  background: var(--accent); color: var(--bg-0); border: none;
+  padding: 16px 40px; font-size: 14px; letter-spacing: 0.1em;
+  font-family: var(--sans); font-weight: 500; cursor: pointer;
+  border-radius: 2px; transition: all 0.3s var(--ease);
+  align-self: flex-start; text-transform: uppercase;
+}
+.form-submit:hover { background: #d4b885; transform: translateY(-2px); }
+.form-submit:active { transform: translateY(0); }
+.form-error {
+  font-size: 12px; color: #e07070; display: none;
+}
+.form-group.error .form-input, .form-group.error .form-select, .form-group.error .form-textarea {
+  border-color: #e07070;
+}
+.form-group.error .form-error { display: block; }
+
+/* ===== Footer ===== */
+.footer {
+  padding: 48px; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--bg-0);
+}
+.footer-logo { font-family: var(--serif-cn); font-size: 18px; color: var(--text-0); }
+.footer-logo span { color: var(--accent); font-family: var(--serif); font-style: italic; }
+.footer-copy { font-size: 12px; color: var(--text-2); letter-spacing: 0.05em; }
+
+/* ===== Lightbox ===== */
+.lightbox {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(5,5,5,0.97); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.4s var(--ease), visibility 0.4s var(--ease);
+}
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox-inner {
+  position: relative; width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+}
+.lightbox-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 32px; flex-shrink: 0;
+}
+.lightbox-counter {
+  font-family: var(--serif); font-size: 16px; color: var(--text-1);
+  letter-spacing: 0.1em;
+}
+.lightbox-counter span { color: var(--accent); }
+.lightbox-close {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s var(--ease);
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.12); }
+.lightbox-close svg { width: 18px; height: 18px; stroke: var(--text-0); }
+.lightbox-body {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 0 32px; gap: 32px; min-height: 0;
+}
+.lightbox-image-wrap {
+  flex: 1; height: 100%; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.lightbox-image {
+  max-width: 100%; max-height: 100%; object-fit: contain;
+  opacity: 0; transition: opacity 0.4s var(--ease);
+}
+.lightbox-image.loaded { opacity: 1; }
+.lightbox-loader {
+  position: absolute; width: 32px; height: 32px;
+  border: 2px solid var(--line); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+.lightbox-image.loaded ~ .lightbox-loader { display: none; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.lightbox-info {
+  width: 340px; flex-shrink: 0; padding: 0 0 0 32px;
+  border-left: 1px solid var(--line); height: 80%;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow-y: auto;
+}
+.lightbox-info-group {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px;
+}
+.lightbox-info-title {
+  font-family: var(--serif-cn); font-size: 26px; font-weight: 400;
+  line-height: 1.2; margin-bottom: 6px;
+}
+.lightbox-info-subtitle {
+  font-family: var(--serif); font-style: italic; font-size: 16px;
+  color: var(--text-1); margin-bottom: 20px;
+}
+.lightbox-info-meta {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 20px;
+  padding-bottom: 20px; border-bottom: 1px solid var(--line);
+}
+.lightbox-info-meta span { font-size: 13px; color: var(--text-1); }
+.lightbox-info-meta span::before { content: '·'; margin-right: 12px; color: var(--text-2); }
+.lightbox-info-meta span:first-child::before { display: none; }
+.lightbox-info-desc {
+  font-size: 14px; line-height: 1.7; color: var(--text-1);
+  margin-bottom: 20px;
+}
+.lightbox-info-status {
+  font-size: 12px; color: var(--text-2); letter-spacing: 0.1em;
+  padding: 4px 12px; border: 1px solid var(--line); border-radius: 2px;
+  align-self: flex-start;
+}
+
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+  z-index: 10;
+}
+.lightbox-nav:hover { background: rgba(255,255,255,0.12); }
+.lightbox-nav svg { width: 20px; height: 20px; stroke: var(--text-0); }
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+.lightbox-prev:hover { transform: translateY(-50%) translateX(-4px); }
+.lightbox-next:hover { transform: translateY(-50%) translateX(4px); }
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(120px);
+  background: var(--bg-3); border: 1px solid var(--accent-soft);
+  color: var(--text-0); padding: 16px 28px; border-radius: 4px;
+  font-size: 14px; z-index: 300; display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transition: transform 0.5s var(--ease);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast svg { width: 20px; height: 20px; stroke: var(--accent); }
+
+/* ===== Scroll Reveal ===== */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== Mobile Menu ===== */
+.mobile-menu {
+  position: fixed; inset: 0; z-index: 99;
+  background: var(--bg-0); padding: 80px 32px 32px;
+  display: flex; flex-direction: column; gap: 0;
+  transform: translateX(100%); transition: transform 0.4s var(--ease);
+}
+.mobile-menu.open { transform: translateX(0); }
+.mobile-menu a {
+  font-family: var(--serif-cn); font-size: 28px; font-weight: 300;
+  padding: 20px 0; border-bottom: 1px solid var(--line);
+  color: var(--text-0);
+}
+.mobile-menu a:hover { color: var(--accent); }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .nav { padding: 16px 32px; }
+  .nav.scrolled { padding: 12px 32px; }
+  .section { padding: 80px 32px; }
+  .hero { padding: 0 32px 64px; }
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-grid, .inquiry-grid { grid-template-columns: 1fr; gap: 48px; }
+  .footer { padding: 32px; flex-direction: column; gap: 16px; text-align: center; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .nav { padding: 14px 20px; }
+  .nav.scrolled { padding: 10px 20px; }
+  .section { padding: 64px 20px; }
+  .hero { padding: 0 20px 48px; }
+  .portfolio-grid { grid-template-columns: 1fr; gap: 16px; }
+  .form-row { grid-template-columns: 1fr; gap: 16px; }
+  .filters { gap: 6px; }
+  .filter-btn { padding: 6px 12px; font-size: 12px; }
+  .filter-count { display: none; }
+  .lightbox-body { flex-direction: column; padding: 0 16px; gap: 16px; }
+  .lightbox-info {
+    width: 100%; border-left: none; border-top: 1px solid var(--line);
+    padding: 20px 0 0; height: auto; max-height: 35vh;
+  }
+  .lightbox-nav { width: 40px; height: 40px; }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
+  .lightbox-topbar { padding: 16px; }
+  .section-header { margin-bottom: 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-logo" onclick="scrollToTop()">沈屿<span>Shen Yu</span></div>
+  <div class="nav-links">
+    <a class="nav-link" data-target="hero">首页</a>
+    <a class="nav-link" data-target="portfolio">作品</a>
+    <a class="nav-link" data-target="about">关于</a>
+    <a class="nav-link" data-target="inquiry">询价</a>
+    <a class="nav-cta" data-target="inquiry">商业询价</a>
+  </div>
+  <div class="nav-burger" id="burger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a data-target="hero" onclick="mobileNav('hero')">首页</a>
+  <a data-target="portfolio" onclick="mobileNav('portfolio')">作品</a>
+  <a data-target="about" onclick="mobileNav('about')">关于</a>
+  <a data-target="inquiry" onclick="mobileNav('inquiry')">商业询价</a>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Architecture · Urban Space · Interior</div>
+    <h1 class="hero-name">沈屿<em>Shen Yu</em></h1>
+    <p class="hero-sub">建筑<span>·</span>城市空间<span>·</span>室内摄影</p>
+  </div>
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+  <!-- Music Button -->
+  <div class="music-btn playing" id="musicBtn" onclick="handleMusicClick(event)">
+    <svg class="music-icon-play" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V5l12-2v13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke-width="1.5"/>
+      <circle cx="18" cy="16" r="3" stroke-width="1.5"/>
+    </svg>
+    <svg class="music-icon-pause" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V5l12-2v13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke-width="1.5"/>
+      <circle cx="18" cy="16" r="3" stroke-width="1.5"/>
+    </svg>
+    <svg class="music-icon-muted" viewBox="0 0 24 24" fill="none">
+      <path d="M9 18V5l12-2v13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke-width="1.5"/>
+      <circle cx="18" cy="16" r="3" stroke-width="1.5"/>
+      <line x1="4" y1="4" x2="20" y2="20" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <input type="file" id="musicFile" accept="audio/*" style="display:none" onchange="handleMusicUpload(event)">
+  <audio id="uploadedAudio" loop></audio>
+</section>
+
+<!-- Portfolio -->
+<section class="section portfolio" id="portfolio">
+  <div class="section-header reveal">
+    <div class="section-label">Selected Works</div>
+    <h2 class="section-title">作品<em>2025 — 2026</em></h2>
+  </div>
+
+  <div class="filters reveal" id="filters">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="shanghai">上海老建筑</button>
+    <button class="filter-btn" data-filter="shenzhen">深圳天际线</button>
+    <button class="filter-btn" data-filter="interior">室内空间</button>
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+
+  <div class="portfolio-grid" id="portfolioGrid"></div>
+</section>
+
+<!-- About -->
+<section class="section about" id="about">
+  <div class="section-header reveal">
+    <div class="section-label">About</div>
+    <h2 class="section-title">关于<em>The Photographer</em></h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p><strong>沈屿</strong>，常驻上海，可出差。专注于<strong>建筑、城市空间与室内</strong>摄影，关注建筑在时间与光线中的状态变化。</p>
+      <p>从法租界老建筑的清晨梧桐光影，到后海总部基地的蓝调天幕；从苏州茶室的当代中式叙事，到杭州书店的材质对话——每一个空间都有其特定的光线窗口和情绪节奏。</p>
+      <p>工作方式以委托制为主，亦保留个人项目空间。合作包括建筑事务所、地产开发商、室内设计工作室及文化机构。</p>
+    </div>
+    <div class="about-info reveal">
+      <div class="about-info-item">
+        <span class="about-info-label">城市</span>
+        <span class="about-info-value">上海 / 可出差</span>
+      </div>
+      <div class="about-info-item">
+        <span class="about-info-label">方向</span>
+        <span class="about-info-value">建筑 · 城市 · 室内</span>
+      </div>
+      <div class="about-info-item">
+        <span class="about-info-label">语言</span>
+        <span class="about-info-value">中文为主</span>
+      </div>
+      <div class="about-info-item">
+        <span class="about-info-label">合作模式</span>
+        <span class="about-info-value">委托制 + 个人项目</span>
+      </div>
+      <div class="about-info-item">
+        <span class="about-info-label">邮箱</span>
+        <span class="about-info-value">studio.shenyu@example.com</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Inquiry -->
+<section class="section inquiry" id="inquiry">
+  <div class="section-header reveal">
+    <div class="section-label">Commercial Inquiry</div>
+    <h2 class="section-title">商业询价<em>Start a Project</em></h2>
+  </div>
+  <div class="inquiry-grid">
+    <div class="inquiry-left reveal">
+      <p>请尽可能详细地填写以下信息，有助于我快速理解项目需求并给出准确报价。通常会在 2 个工作日内回复。</p>
+      <div class="inquiry-contact">
+        <div class="inquiry-contact-item">
+          <div class="inquiry-contact-label">邮箱</div>
+          <div class="inquiry-contact-value">studio.shenyu@example.com</div>
+        </div>
+        <div class="inquiry-contact-item">
+          <div class="inquiry-contact-label">微信</div>
+          <div class="inquiry-contact-value">收到有效询价后提供</div>
+        </div>
+        <div class="inquiry-contact-item">
+          <div class="inquiry-contact-label">所在城市</div>
+          <div class="inquiry-contact-value">上海 / 可出差</div>
+        </div>
+      </div>
+    </div>
+
+    <form class="inquiry-form reveal" id="inquiryForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">项目城市与地址 <span class="req">*</span></label>
+          <input class="form-input" type="text" name="address" placeholder="例：上海市徐汇区武康路xxx号" required>
+          <span class="form-error">请填写项目地址</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">联系邮箱 <span class="req">*</span></label>
+          <input class="form-input" type="email" name="email" placeholder="your@email.com" required>
+          <span class="form-error">请填写有效邮箱</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">建筑/室内类型 <span class="req">*</span></label>
+          <select class="form-select" name="type" required>
+            <option value="">请选择</option>
+            <option value="commercial">商业建筑</option>
+            <option value="residential">住宅</option>
+            <option value="cultural">文化空间</option>
+            <option value="office">办公空间</option>
+            <option value="hospitality">酒店/餐饮</option>
+            <option value="retail">零售空间</option>
+            <option value="other">其他</option>
+          </select>
+          <span class="form-error">请选择类型</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">面积（㎡）</label>
+          <input class="form-input" type="text" name="area" placeholder="例：约 1200㎡">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">期望拍摄时间</label>
+          <input class="form-input" type="text" name="schedule" placeholder="例：2026年4月，需2个拍摄日">
+        </div>
+        <div class="form-group">
+          <label class="form-label">天气窗口</label>
+          <select class="form-select" name="weather">
+            <option value="">无特殊要求</option>
+            <option value="golden">黄昏 / 黄金时刻</option>
+            <option value="blue">蓝调时刻</option>
+            <option value="morning">清晨</option>
+            <option value="rain">雨后</option>
+            <option value="overcast">阴天漫射光</option>
+            <option value="night">夜景</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">交付张数</label>
+          <input class="form-input" type="number" name="count" placeholder="例：15" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">版权用途</label>
+          <select class="form-select" name="license">
+            <option value="">请选择</option>
+            <option value="advertising">商业广告</option>
+            <option value="editorial">编辑出版</option>
+            <option value="corporate">企业宣传</option>
+            <option value="portfolio">设计作品集</option>
+            <option value="personal">个人收藏</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">附加需求</label>
+        <div class="form-checkbox-group">
+          <label class="form-checkbox"><input type="checkbox" name="video"> 需要视频拍摄</label>
+          <label class="form-checkbox"><input type="checkbox" name="clearance"> 需要建筑清场</label>
+          <label class="form-checkbox"><input type="checkbox" name="coordination"> 需要人员协调</label>
+          <label class="form-checkbox"><input type="checkbox" name="rush"> 加急交付</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">项目说明</label>
+        <textarea class="form-textarea" name="notes" placeholder="请描述项目背景、设计理念、特殊需求等..."></textarea>
+      </div>
+
+      <button type="submit" class="form-submit">提交询价</button>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-logo">沈屿<span>Shen Yu</span></div>
+  <div class="footer-copy">© 2026 Shen Yu Studio · Architecture Photography · All Rights Reserved</div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="lightbox-topbar">
+      <div class="lightbox-counter"><span id="lbCurrent">01</span> / <span id="lbTotal">09</span></div>
+      <button class="lightbox-close" onclick="closeLightbox()">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="lightbox-body">
+      <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="lightbox-image-wrap">
+        <img class="lightbox-image" id="lbImage" alt="">
+        <div class="lightbox-loader" id="lbLoader"></div>
+      </div>
+      <div class="lightbox-info" id="lbInfo"></div>
+      <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span id="toastMsg">询价已提交，将在2个工作日内回复</span>
+</div>
+
+<script>
+// ===== Image API helper =====
+const API_BASE = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image';
+function apiImg(prompt, size) {
+  return API_BASE + '?prompt=' + encodeURIComponent(prompt) + '&image_size=' + (size || 'landscape_16_9');
+}
+
+// ===== Project Data =====
+const projects = [
+  {
+    id: 'wukang-road', group: 'shanghai', groupLabel: '上海老建筑',
+    title: '武康路公寓更新记录', subtitle: 'Wukang Road Apartment Renewal',
+    date: '2025.04', location: '上海', condition: '清晨与雨后',
+    status: '已发布', hasImage: true,
+    image: 'assets/images/shanghai-old-architecture-morning.jpg',
+    desc: '记录武康路历史公寓建筑的更新过程。清晨的光线穿透梧桐枝叶，在红砖墙面上投下细碎的阴影；雨后的湿润路面反射出建筑立面的完整倒影，两种状态构成了这条街道最典型的视觉记忆。'
+  },
+  {
+    id: 'yangpu-factory', group: 'shanghai', groupLabel: '上海老建筑',
+    title: '杨浦旧厂房改造', subtitle: 'Yangpu Old Factory Renovation',
+    date: '2025.09', location: '上海杨浦', condition: '委托项目',
+    status: '外立面已发布 · 室内暂缓', hasImage: false,
+    image: apiImg('Architectural photography of renovated old industrial factory exterior facade, red brick walls with large steel frame windows, Shanghai urban renewal, golden afternoon light, professional architectural photography, cinematic warm tones'),
+    desc: '杨浦工业区旧厂房改造项目。外立面保留了工业时代的红砖与钢窗结构，与改造后的玻璃幕墙形成材质对话。室内部分尚在授权审批中，暂不公开发布。'
+  },
+  {
+    id: 'shikumen', group: 'shanghai', groupLabel: '上海老建筑',
+    title: '石库门公共空间', subtitle: 'Shikumen Public Space',
+    date: '2026.02', location: '上海', condition: '个人项目',
+    status: '即将发布', hasImage: false,
+    image: apiImg('Architectural photography of Shanghai Shikumen stone gate traditional lane architecture, narrow alleyway with stone archway, modern renovation preserving heritage, warm daylight filtering through, professional architectural photography'),
+    desc: '上海石库门里弄的公共空间记录。关注传统弄堂建筑在现代城市更新中的身份转变——从居住空间到公共文化场所的叙事重构。'
+  },
+  {
+    id: 'houhai-cbd', group: 'shenzhen', groupLabel: '深圳天际线',
+    title: '后海总部基地黄昏', subtitle: 'Houhai CBD at Blue Hour',
+    date: '2025.11', location: '深圳后海', condition: '蓝调时刻',
+    status: '已发布', hasImage: true,
+    image: 'assets/images/shenzhen-skyline-blue-hour.jpg',
+    desc: '深圳后海总部基地的黄昏时刻。玻璃幕墙在蓝调时分反射天光，高架桥的暖色路灯与冷色天幕形成强烈的色温对比。水面将城市的灯光拉成长条状反射，构成一种安静的都市壮丽。'
+  },
+  {
+    id: 'futian-night', group: 'shenzhen', groupLabel: '深圳天际线',
+    title: '福田 CBD 雨季夜景', subtitle: 'Futian CBD Rainy Night',
+    date: '2025.06', location: '深圳福田', condition: '雨季夜景',
+    status: '即将发布', hasImage: false,
+    image: apiImg('Urban night photography of Futian CBD Shenzhen, modern skyscrapers with illuminated windows, rain soaked streets reflecting city lights, moody blue hour atmosphere, professional cityscape photography, cinematic tones'),
+    desc: '深圳福田中心区雨季夜景。雨水浸湿的街道将摩天楼的灯光拉成长条状反射，城市在雨幕中呈现出一种电影感的疏离与华丽并存的气质。'
+  },
+  {
+    id: 'qianhai-waterfront', group: 'shenzhen', groupLabel: '深圳天际线',
+    title: '前海滨水步道', subtitle: 'Qianhai Waterfront Promenade',
+    date: '2026.01', location: '深圳前海', condition: '黄昏',
+    status: '即将发布', hasImage: false,
+    image: apiImg('Architecture photography of Qianhai waterfront promenade walkway in Shenzhen, modern urban landscape design with clean lines, dusk lighting, calm water reflection of skyline, professional architectural photography'),
+    desc: '深圳前海滨海步道。现代都市滨水空间在黄昏时分的安静与辽阔，步道的线条引导视线延伸至海平线，建筑与自然在此形成克制的对话。'
+  },
+  {
+    id: 'bailu-bookstore', group: 'interior', groupLabel: '室内空间',
+    title: '白鹭书店', subtitle: 'Bailu Bookstore',
+    date: '2025.08', location: '杭州', condition: '室内空间',
+    status: '已发布', hasImage: true,
+    image: 'assets/images/bailu-bookstore-interior.jpg',
+    desc: '杭州白鹭书店室内空间。原木长桌与清水混凝土天花的材质对话，庭院借景将自然引入阅读空间。日间漫射光下，木色温暖而混凝土冷静，两者构成了"第三空间"应有的松弛感。'
+  },
+  {
+    id: 'songchi-apartment', group: 'interior', groupLabel: '室内空间',
+    title: '松弛公寓', subtitle: 'Songchi Apartment',
+    date: '2025.12', location: '上海', condition: '室内空间',
+    status: '即将发布', hasImage: false,
+    image: apiImg('Interior photography of a relaxed modern minimalist apartment in Shanghai, warm wood tones, soft natural light from large floor to ceiling windows, neutral color palette, cozy atmosphere, professional interior photography'),
+    desc: '上海松弛公寓室内项目。极简主义的空间基调中，暖色木质与柔和自然光共同营造居住的松弛感。大面积留白让光线本身成为空间的主要装饰。'
+  },
+  {
+    id: 'guiyu-tea-room', group: 'interior', groupLabel: '室内空间',
+    title: '归屿茶室', subtitle: 'Guiyu Tea Room',
+    date: '2026.03', location: '苏州', condition: '室内空间',
+    status: '已发布', hasImage: true,
+    image: 'assets/images/guiyu-tea-room-interior.jpg',
+    desc: '苏州归屿茶室。当代中式空间对传统茶事的回应——低矮桌案、落地窗景与陶器陈列构成一种关于"慢"的空间叙事。光影从庭院渗入，在地面画出时间的刻度。'
+  }
+];
+
+// ===== Hero Background =====
+document.getElementById('heroBg').style.backgroundImage = "url('assets/images/shanghai-old-architecture-morning.jpg')";
+
+// ===== Render Portfolio =====
+const grid = document.getElementById('portfolioGrid');
+const filterCount = document.getElementById('filterCount');
+
+function renderPortfolio(filter) {
+  filter = filter || 'all';
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? projects : projects.filter(function(p) { return p.group === filter; });
+  filterCount.textContent = filtered.length + ' 个项目';
+
+  filtered.forEach(function(p, i) {
+    var card = document.createElement('div');
+    card.className = 'project-card' + (p.hasImage ? '' : ' no-image');
+    card.setAttribute('data-id', p.id);
+    card.style.transitionDelay = (i * 60) + 'ms';
+
+    if (p.hasImage) {
+      card.innerHTML =
+        '<img class="project-card-img" src="' + p.image + '" alt="' + p.title + '" loading="lazy">' +
+        '<div class="project-card-overlay">' +
+          '<div class="project-card-group">' + p.groupLabel + '</div>' +
+          '<div class="project-card-title">' + p.title + '</div>' +
+          '<div class="project-card-meta">' + p.date + ' · ' + p.location + '</div>' +
+        '</div>' +
+        '<div class="project-card-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+    } else {
+      card.innerHTML =
+        '<div>' +
+          '<div class="project-card-group">' + p.groupLabel + '</div>' +
+          '<div class="project-card-title">' + p.title + '</div>' +
+          '<div class="project-card-meta" style="margin-top:6px">' + p.date + ' · ' + p.location + '</div>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-end">' +
+          '<div class="project-card-status">' + p.status + '</div>' +
+          '<div class="project-card-arrow" style="position:static;opacity:1;transform:none"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+        '</div>';
+    }
+
+    card.addEventListener('click', function() { openLightbox(p.id); });
+    grid.appendChild(card);
+  });
+
+  // Trigger reveal animation
+  setTimeout(function() {
+    grid.querySelectorAll('.project-card').forEach(function(c) {
+      c.classList.add('visible');
+    });
+  }, 50);
+}
+
+renderPortfolio('all');
+
+// ===== Filters =====
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderPortfolio(btn.getAttribute('data-filter'));
+  });
+});
+
+// ===== Lightbox =====
+var lbIndex = 0;
+var lbList = [];
+var lbImage = document.getElementById('lbImage');
+var lbLoader = document.getElementById('lbLoader');
+var lbInfo = document.getElementById('lbInfo');
+var lbCurrent = document.getElementById('lbCurrent');
+var lbTotal = document.getElementById('lbTotal');
+var lightbox = document.getElementById('lightbox');
+
+function openLightbox(id) {
+  lbList = projects;
+  lbIndex = lbList.findIndex(function(p) { return p.id === id; });
+  if (lbIndex < 0) lbIndex = 0;
+  lbTotal.textContent = String(lbList.length).padStart(2, '0');
+  updateLightbox();
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navLightbox(dir) {
+  lbIndex = (lbIndex + dir + lbList.length) % lbList.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  var p = lbList[lbIndex];
+  lbCurrent.textContent = String(lbIndex + 1).padStart(2, '0');
+
+  lbImage.classList.remove('loaded');
+  lbLoader.style.display = 'block';
+
+  var img = new Image();
+  img.onload = function() {
+    lbImage.src = p.image;
+    lbImage.classList.add('loaded');
+    lbLoader.style.display = 'none';
+  };
+  img.onerror = function() {
+    lbImage.src = p.image;
+    lbImage.classList.add('loaded');
+    lbLoader.style.display = 'none';
+  };
+  img.src = p.image;
+
+  var metaParts = [];
+  if (p.date) metaParts.push('<span>' + p.date + '</span>');
+  if (p.location) metaParts.push('<span>' + p.location + '</span>');
+  if (p.condition) metaParts.push('<span>' + p.condition + '</span>');
+
+  lbInfo.innerHTML =
+    '<div class="lightbox-info-group">' + p.groupLabel + '</div>' +
+    '<div class="lightbox-info-title">' + p.title + '</div>' +
+    '<div class="lightbox-info-subtitle">' + p.subtitle + '</div>' +
+    '<div class="lightbox-info-meta">' + metaParts.join('') + '</div>' +
+    '<div class="lightbox-info-desc">' + p.desc + '</div>' +
+    '<div class="lightbox-info-status">' + p.status + '</div>';
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navLightbox(-1);
+  if (e.key === 'ArrowRight') navLightbox(1);
+});
+
+// Click backdrop to close
+lightbox.addEventListener('click', function(e) {
+  if (e.target === lightbox || e.target.classList.contains('lightbox-inner') || e.target.classList.contains('lightbox-body') || e.target.classList.contains('lightbox-image-wrap')) {
+    closeLightbox();
+  }
+});
+
+// ===== Navigation =====
+var nav = document.getElementById('nav');
+var scrollProgress = document.getElementById('scrollProgress');
+var sections = ['hero', 'portfolio', 'about', 'inquiry'];
+
+document.querySelectorAll('[data-target]').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = this.getAttribute('data-target');
+    var el = document.getElementById(target);
+    if (el) {
+      var offset = target === 'hero' ? 0 : el.offsetTop - 60;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+    if (document.getElementById('mobileMenu').classList.contains('open')) {
+      toggleMobileMenu();
+    }
+  });
+});
+
+window.addEventListener('scroll', function() {
+  var st = window.pageYOffset || document.documentElement.scrollTop;
+
+  // Nav background
+  if (st > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+
+  // Scroll progress
+  var docH = document.documentElement.scrollHeight - window.innerHeight;
+  scrollProgress.style.width = (st / docH * 100) + '%';
+
+  // Active nav link
+  var current = 'hero';
+  sections.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && st >= el.offsetTop - 120) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.classList.toggle('active', link.getAttribute('data-target') === current);
+  });
+
+  // Hero parallax
+  var heroBg = document.getElementById('heroBg');
+  if (st < window.innerHeight) {
+    heroBg.style.transform = 'scale(1.05) translateY(' + (st * 0.3) + 'px)';
+  }
+});
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== Mobile Menu =====
+function toggleMobileMenu() {
+  var menu = document.getElementById('mobileMenu');
+  var burger = document.getElementById('burger');
+  menu.classList.toggle('open');
+  burger.classList.toggle('active');
+}
+
+function mobileNav(target) {
+  toggleMobileMenu();
+  var el = document.getElementById(target);
+  if (el) {
+    var offset = target === 'hero' ? 0 : el.offsetTop - 60;
+    setTimeout(function() { window.scrollTo({ top: offset, behavior: 'smooth' }); }, 200);
+  }
+}
+
+// ===== Scroll Reveal =====
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(function(el) {
+  revealObserver.observe(el);
+});
+
+// ===== Form Validation =====
+var form = document.getElementById('inquiryForm');
+var toast = document.getElementById('toast');
+var toastMsg = document.getElementById('toastMsg');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  var valid = true;
+
+  // Clear previous errors
+  form.querySelectorAll('.form-group').forEach(function(g) { g.classList.remove('error'); });
+
+  // Validate required fields
+  var address = form.querySelector('[name="address"]');
+  var email = form.querySelector('[name="email"]');
+  var type = form.querySelector('[name="type"]');
+
+  if (!address.value.trim()) {
+    address.closest('.form-group').classList.add('error');
+    valid = false;
+  }
+  if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    email.closest('.form-group').classList.add('error');
+    valid = false;
+  }
+  if (!type.value) {
+    type.closest('.form-group').classList.add('error');
+    valid = false;
+  }
+
+  if (!valid) {
+    showToast('请完善必填项', false);
+    return;
+  }
+
+  // Simulate submission
+  var submitBtn = form.querySelector('.form-submit');
+  submitBtn.textContent = '提交中...';
+  submitBtn.disabled = true;
+
+  setTimeout(function() {
+    submitBtn.textContent = '提交询价';
+    submitBtn.disabled = false;
+    form.reset();
+    showToast('询价已提交，将在2个工作日内回复', true);
+  }, 1200);
+});
+
+function showToast(msg, success) {
+  toastMsg.textContent = msg;
+  var icon = toast.querySelector('svg');
+  if (success) {
+    icon.innerHTML = '<path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+  } else {
+    icon.innerHTML = '<circle cx="12" cy="12" r="10" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke-width="1.5" stroke-linecap="round"/>';
+  }
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 4000);
+}
+
+// ===== Touch swipe for lightbox =====
+var touchStartX = 0;
+var touchEndX = 0;
+
+lightbox.addEventListener('touchstart', function(e) {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+lightbox.addEventListener('touchend', function(e) {
+  touchEndX = e.changedTouches[0].screenX;
+  var diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 50) {
+    navLightbox(diff > 0 ? 1 : -1);
+  }
+});
+
+// ===== Music Player =====
+var audioCtx = null;
+var isPlaying = false;
+var musicMode = 'generated'; // 'generated' or 'uploaded'
+var masterGain = null;
+var fluteGain = null;
+var guqinGain = null;
+var droneGain = null;
+var uploadedAudio = null;
+var clickTimer = null;
+var clickCount = 0;
+var userPaused = false;
+
+// Pentatonic scale (五声音阶) - Gong Shang Jue Zhi Yu
+var pentatonic = [
+  261.63, // C4 - 宫
+  293.66, // D4 - 商
+  329.63, // E4 - 角
+  392.00, // G4 - 徵
+  440.00, // A4 - 羽
+  523.25, // C5 - 宫
+  587.33, // D5 - 商
+  659.25, // E5 - 角
+];
+
+var melodyIndex = 0;
+var melodyNotes = [];
+
+function generateMelody() {
+  melodyNotes = [];
+  for (var i = 0; i < 16; i++) {
+    var idx = Math.floor(Math.random() * pentatonic.length);
+    melodyNotes.push(pentatonic[idx]);
+  }
+}
+
+function initAudio() {
+  if (audioCtx) return;
+  var AC = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AC();
+
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0;
+  masterGain.connect(audioCtx.destination);
+
+  // 笛子/箫
+  fluteGain = audioCtx.createGain();
+  fluteGain.gain.value = 0.18;
+  fluteGain.connect(masterGain);
+
+  // 古琴/拨弦
+  guqinGain = audioCtx.createGain();
+  guqinGain.gain.value = 0.12;
+  guqinGain.connect(masterGain);
+
+  // 低音 drone
+  droneGain = audioCtx.createGain();
+  droneGain.gain.value = 0.06;
+  droneGain.connect(masterGain);
+
+  uploadedAudio = document.getElementById('uploadedAudio');
+
+  generateMelody();
+}
+
+function playFluteNote(freq, time, duration) {
+  if (!audioCtx || !fluteGain) return;
+  var osc = audioCtx.createOscillator();
+  var gain = audioCtx.createGain();
+  var filter = audioCtx.createBiquadFilter();
+
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+
+  filter.type = 'lowpass';
+  filter.frequency.value = freq * 2.5;
+  filter.Q.value = 0.8;
+
+  // 呼吸包络
+  gain.gain.setValueAtTime(0, time);
+  gain.gain.linearRampToValueAtTime(0.08, time + 0.15);
+  gain.gain.linearRampToValueAtTime(0.06, time + duration * 0.3);
+  gain.gain.linearRampToValueAtTime(0, time + duration);
+
+  // 高八度泛音
+  var harmonic = audioCtx.createOscillator();
+  var hGain = audioCtx.createGain();
+  harmonic.type = 'sine';
+  harmonic.frequency.value = freq * 2;
+  hGain.gain.setValueAtTime(0, time);
+  hGain.gain.linearRampToValueAtTime(0.02, time + 0.15);
+  hGain.gain.linearRampToValueAtTime(0, time + duration);
+
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(fluteGain);
+  harmonic.connect(hGain);
+  hGain.connect(fluteGain);
+
+  osc.start(time);
+  harmonic.start(time);
+  osc.stop(time + duration + 0.1);
+  harmonic.stop(time + duration + 0.1);
+}
+
+function playGuqinNote(freq, time) {
+  if (!audioCtx || !guqinGain) return;
+  var osc = audioCtx.createOscillator();
+  var gain = audioCtx.createGain();
+
+  osc.type = 'triangle';
+  osc.frequency.value = freq;
+
+  // 拨弦衰减
+  gain.gain.setValueAtTime(0.15, time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 1.2);
+
+  osc.connect(gain);
+  gain.connect(guqinGain);
+
+  osc.start(time);
+  osc.stop(time + 1.5);
+}
+
+function startDrone() {
+  if (!audioCtx || !droneGain) return;
+  // C3 + G3 五度和声
+  var drone1 = audioCtx.createOscillator();
+  var drone2 = audioCtx.createOscillator();
+  var dGain = audioCtx.createGain();
+
+  drone1.type = 'sine';
+  drone1.frequency.value = 130.81; // C3
+  drone2.type = 'sine';
+  drone2.frequency.value = 196.00; // G3
+
+  dGain.gain.value = 0.08;
+
+  drone1.connect(dGain);
+  drone2.connect(dGain);
+  dGain.connect(droneGain);
+
+  drone1.start();
+  drone2.start();
+}
+
+var nextNoteTime = 0;
+var schedulerTimer = null;
+
+function scheduler() {
+  if (!isPlaying || musicMode !== 'generated') return;
+  if (!audioCtx) return;
+
+  while (nextNoteTime < audioCtx.currentTime + 0.2) {
+    var note = melodyNotes[melodyIndex % melodyNotes.length];
+    var duration = 0.4 + Math.random() * 0.4;
+
+    // 笛子主旋律
+    playFluteNote(note, nextNoteTime, duration);
+
+    // 古琴偶尔拨弦（低音区）
+    if (Math.random() < 0.3) {
+      var lowNote = pentatonic[Math.floor(Math.random() * 4)] / 2;
+      playGuqinNote(lowNote, nextNoteTime + Math.random() * 0.2);
+    }
+
+    // 下一个音的时间间隔（呼吸感）
+    var interval = 0.5 + Math.random() * 0.5;
+    nextNoteTime += interval;
+
+    melodyIndex++;
+    if (melodyIndex % melodyNotes.length === 0) {
+      generateMelody();
+    }
+  }
+
+  schedulerTimer = setTimeout(scheduler, 50);
+}
+
+function startGenerated() {
+  if (!audioCtx) return;
+  startDrone();
+  nextNoteTime = audioCtx.currentTime + 0.1;
+  scheduler();
+}
+
+function stopGenerated() {
+  if (schedulerTimer) {
+    clearTimeout(schedulerTimer);
+    schedulerTimer = null;
+  }
+}
+
+function playMusic() {
+  if (!audioCtx) initAudio();
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+
+  if (musicMode === 'uploaded' && uploadedAudio && uploadedAudio.src) {
+    uploadedAudio.play();
+  } else if (musicMode === 'generated') {
+    startGenerated();
+  }
+
+  // 淡入
+  if (masterGain) {
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 1);
+  }
+}
+
+function pauseMusic() {
+  if (masterGain && audioCtx) {
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, audioCtx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+  }
+
+  if (musicMode === 'uploaded' && uploadedAudio) {
+    setTimeout(function() {
+      uploadedAudio.pause();
+    }, 800);
+  } else if (musicMode === 'generated') {
+    stopGenerated();
+  }
+}
+
+// Auto-play on first user interaction (browsers block autoplay without interaction)
+function tryAutoPlay() {
+  if (userPaused) return;
+  if (isPlaying) return;
+  var btn = document.getElementById('musicBtn');
+  initAudio();
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume().then(function() {
+      if (userPaused) return;
+      if (isPlaying) return;
+      isPlaying = true;
+      btn.classList.add('playing');
+      startGenerated();
+    }).catch(function() {});
+  } else {
+    isPlaying = true;
+    btn.classList.add('playing');
+    startGenerated();
+  }
+}
+
+// 只在用户首次交互时尝试播放（不提前创建 pending promise）
+document.addEventListener('DOMContentLoaded', function() {
+  var hasInteracted = false;
+  function firstInteraction(e) {
+    if (hasInteracted) return;
+    if (e && e.target && e.target.closest && e.target.closest('#musicBtn')) return;
+    hasInteracted = true;
+    if (!userPaused && !isPlaying) {
+      tryAutoPlay();
+    }
+    document.removeEventListener('scroll', firstInteraction);
+    document.removeEventListener('click', firstInteraction);
+    document.removeEventListener('touchstart', firstInteraction);
+    document.removeEventListener('keydown', firstInteraction);
+    document.removeEventListener('wheel', firstInteraction);
+  }
+  document.addEventListener('scroll', firstInteraction, { passive: true });
+  document.addEventListener('click', firstInteraction);
+  document.addEventListener('touchstart', firstInteraction, { passive: true });
+  document.addEventListener('keydown', firstInteraction);
+  document.addEventListener('wheel', firstInteraction, { passive: true });
+});
+
+function handleMusicClick(e) {
+  e.stopPropagation();
+  clickCount++;
+  if (clickTimer) clearTimeout(clickTimer);
+
+  if (clickCount >= 2) {
+    // 双击 - 打开文件选择
+    clickCount = 0;
+    var fileInput = document.getElementById('musicFile');
+    fileInput.click();
+  } else {
+    // 单击 - 切换播放/暂停
+    clickTimer = setTimeout(function() {
+      clickCount = 0;
+      var btn = document.getElementById('musicBtn');
+      if (isPlaying) {
+        isPlaying = false;
+        userPaused = true;
+        btn.classList.remove('playing');
+        btn.classList.add('muted');
+        pauseMusic();
+      } else {
+        isPlaying = true;
+        userPaused = false;
+        btn.classList.remove('muted');
+        btn.classList.add('playing');
+        playMusic();
+      }
+    }, 300);
+  }
+}
+
+function handleMusicUpload(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+
+  var url = URL.createObjectURL(file);
+  var btn = document.getElementById('musicBtn');
+
+  pauseMusic();
+  musicMode = 'uploaded';
+  uploadedAudio.src = url;
+  uploadedAudio.volume = 0;
+  isPlaying = true;
+  userPaused = false;
+  btn.classList.remove('muted');
+  btn.classList.add('playing');
+
+  uploadedAudio.play().then(function() {
+    // 淡入
+    var fadeIn = setInterval(function() {
+      if (uploadedAudio.volume < 0.8) {
+        uploadedAudio.volume = Math.min(0.8, uploadedAudio.volume + 0.05);
+      } else {
+        clearInterval(fadeIn);
+      }
+    }, 100);
+  }).catch(function() {
+    isPlaying = false;
+    btn.classList.remove('playing');
+    btn.classList.add('muted');
+  });
+
+  showToast('已播放：' + file.name, 'success');
+}
+</script>
+</body>
+</html>
